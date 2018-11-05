@@ -51,7 +51,7 @@ namespace SeboProject.Controllers
         public IActionResult Create()
         {
             ViewData["BookConditionId"] = new SelectList(_context.BookCondition, "BookConditionId", "Condition");
-            ViewData["SellerId"] = new SelectList(_context.Seller, "SellerId", "Email");
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator");
             ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName");
             return View();
         }
@@ -61,7 +61,7 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookId,Title,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,SellerId")] Book book)
+        public async Task<IActionResult> Create([Bind("BookId,Title,Description,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,SellerId")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BookConditionId"] = new SelectList(_context.BookCondition, "BookConditionId", "Condition", book.BookConditionId);
-            ViewData["SellerId"] = new SelectList(_context.Seller, "SellerId", "Email", book.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", book.SellerId);
             ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", book.StudyAreaId);
             return View(book);
         }
@@ -89,7 +89,7 @@ namespace SeboProject.Controllers
                 return NotFound();
             }
             ViewData["BookConditionId"] = new SelectList(_context.BookCondition, "BookConditionId", "Condition", book.BookConditionId);
-            ViewData["SellerId"] = new SelectList(_context.Seller, "SellerId", "Email", book.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", book.SellerId);
             ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", book.StudyAreaId);
             return View(book);
         }
@@ -99,7 +99,7 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookId,Title,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,SellerId")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("BookId,Title,Description,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,SellerId")] Book book)
         {
             if (id != book.BookId)
             {
@@ -127,7 +127,7 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BookConditionId"] = new SelectList(_context.BookCondition, "BookConditionId", "Condition", book.BookConditionId);
-            ViewData["SellerId"] = new SelectList(_context.Seller, "SellerId", "Email", book.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", book.SellerId);
             ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", book.StudyAreaId);
             return View(book);
         }

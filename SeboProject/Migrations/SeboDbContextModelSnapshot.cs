@@ -184,38 +184,6 @@ namespace SeboProject.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SeboProject.Data.SeboDbContext+Blog", b =>
-                {
-                    b.Property<int>("BlogId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Url");
-
-                    b.HasKey("BlogId");
-
-                    b.ToTable("Blogs");
-                });
-
-            modelBuilder.Entity("SeboProject.Data.SeboDbContext+Post", b =>
-                {
-                    b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BlogId");
-
-                    b.Property<string>("Content");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("PostId");
-
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("Posts");
-                });
-
             modelBuilder.Entity("SeboProject.Models.Book", b =>
                 {
                     b.Property<int>("BookId")
@@ -229,6 +197,9 @@ namespace SeboProject.Migrations
                     b.Property<int?>("BuyerUserId");
 
                     b.Property<DateTime>("CreationDate");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000);
 
                     b.Property<int>("Edition");
 
@@ -604,14 +575,6 @@ namespace SeboProject.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SeboProject.Data.SeboDbContext+Post", b =>
-                {
-                    b.HasOne("SeboProject.Data.SeboDbContext+Blog", "Blog")
-                        .WithMany("Posts")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("SeboProject.Models.Book", b =>

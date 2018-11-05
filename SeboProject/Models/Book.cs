@@ -16,6 +16,8 @@ namespace SeboProject.Models
         [StringLength(100, MinimumLength = 1, ErrorMessage = "The book's title size must be between 1 and 100 characters.")]
         public string Title { get; set; } //
 
+        [StringLength(1000, MinimumLength = 1, ErrorMessage = "The book's description size must be between 1 and 1000 characters.")]
+        public string Description { get; set; } //
 
         [Required(ErrorMessage = "You must inform the book's ISBN.")]
         [StringLength(13, MinimumLength = 10, ErrorMessage = "The book's ISBN size must be between 10 and 13 characters.")]
@@ -38,7 +40,7 @@ namespace SeboProject.Models
         public int Quantity { get; set; } = 1;//
 
         [Range(0, 99999, ErrorMessage = "The informed price is too high."), DataType(DataType.Currency)]
-        public double Price { get; set; }
+        public double Price { get; set; }//
 
         public int Visualizations { get; set; } = 0; // How many visualizations
         public int QuantitySold { get; set; } = 0; //Just incase the ad has been created having more than 1 exemplar.
@@ -53,6 +55,7 @@ namespace SeboProject.Models
         [Required(ErrorMessage = "You must inform the book's condition")]
         public int BookConditionId { get; set; } // Informs whether the book is new, like new, very good, acceptable, etc.
         public virtual BookCondition BookCondition { get; set; }
+
         [Required]
         public int StudyAreaId { get; set; } // Informs which area of study the subject belongs  Engeneering, Math, IT, Bio, Humans, Law, etc
         public virtual StudyArea StudyArea { get; set; }

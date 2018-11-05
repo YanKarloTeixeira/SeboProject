@@ -15,11 +15,6 @@ namespace SeboProject.Models
         public string Action { get; set; }
 
         //Relational 
-        [Required]
-        //public int AuthorId { get; set; }
-
-        //public virtual Buyer Author { get; set; }
-
         public int ClaimId { get; set; }
         public Claim Claim { get; set; }
 

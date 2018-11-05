@@ -48,19 +48,6 @@ namespace SeboProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Blogs",
-                columns: table => new
-                {
-                    BlogId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Url = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blogs", x => x.BlogId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BookCondition",
                 columns: table => new
                 {
@@ -221,27 +208,6 @@ namespace SeboProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    PostId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    BlogId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.PostId);
-                    table.ForeignKey(
-                        name: "FK_Posts_Blogs_BlogId",
-                        column: x => x.BlogId,
-                        principalTable: "Blogs",
-                        principalColumn: "BlogId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "InstitutionBranch",
                 columns: table => new
                 {
@@ -343,6 +309,7 @@ namespace SeboProject.Migrations
                     BookId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 1000, nullable: true),
                     ISBN = table.Column<string>(maxLength: 13, nullable: false),
                     Publisher = table.Column<string>(maxLength: 40, nullable: false),
                     Edition = table.Column<int>(nullable: false),
@@ -444,8 +411,8 @@ namespace SeboProject.Migrations
                     ClaimId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
-                    OrderId = table.Column<int>(nullable: false),
                     Status = table.Column<string>(nullable: false),
+                    OrderId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -596,11 +563,6 @@ namespace SeboProject.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_BlogId",
-                table: "Posts",
-                column: "BlogId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_CourseId",
                 table: "User",
                 column: "CourseId");
@@ -637,9 +599,6 @@ namespace SeboProject.Migrations
                 name: "ClaimMediation");
 
             migrationBuilder.DropTable(
-                name: "Posts");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -647,9 +606,6 @@ namespace SeboProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Claim");
-
-            migrationBuilder.DropTable(
-                name: "Blogs");
 
             migrationBuilder.DropTable(
                 name: "Order");

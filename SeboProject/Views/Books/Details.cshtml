@@ -17,6 +17,12 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.ISBN)
         </dt>
         <dd>
@@ -92,7 +98,7 @@
             @Html.DisplayNameFor(model => model.Seller)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Seller.Email)
+            @Html.DisplayFor(model => model.Seller.UserName)
         </dd>
     </dl>
 </div>

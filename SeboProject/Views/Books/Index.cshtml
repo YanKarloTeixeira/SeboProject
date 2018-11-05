@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ISBN)
             </th>
             <th>
@@ -64,6 +67,9 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.ISBN)
             </td>
             <td>
@@ -100,7 +106,7 @@
                 @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Seller.Email)
+                @Html.DisplayFor(modelItem => item.Seller.UserName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
