@@ -97,9 +97,9 @@
                 @Html.DisplayFor(modelItem => item.Seller.UserName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn-warning">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderId" class="btn-info">Details</a>|
+                <a asp-action="Delete" asp-route-id="@item.OrderId"class="btn-danger">Delete</a>
             </td>
         </tr>
 }

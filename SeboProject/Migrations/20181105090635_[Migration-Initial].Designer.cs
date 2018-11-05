@@ -10,7 +10,7 @@ using SeboProject.Data;
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    [Migration("20181105065502_[Migration-Initial]")]
+    [Migration("20181105090635_[Migration-Initial]")]
     partial class MigrationInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
