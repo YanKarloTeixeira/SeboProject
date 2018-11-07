@@ -50,7 +50,7 @@ namespace SeboProject.Controllers
         public IActionResult Create()
         {
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName");
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode", user.LocalizationId);
             return View(user);
         }
 
@@ -86,7 +86,7 @@ namespace SeboProject.Controllers
                 return NotFound();
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode", user.LocalizationId);
             return View(user);
         }
 
@@ -123,7 +123,7 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode", user.LocalizationId);
             return View(user);
         }
 

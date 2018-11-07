@@ -115,9 +115,9 @@
                 @Html.DisplayFor(modelItem => item.InstitutionBranch.InstitutionBranchName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId" class="btn-warning">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserId" class="btn-info">Details</a>|
-                <a asp-action="Delete" asp-route-id="@item.UserId"class="btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
             </td>
         </tr>
 }

@@ -38,21 +38,19 @@ namespace SeboProject.Models
         [Range(15, 90)]
         public int Age { get; set; }//
         [Required]
-        [StringLength(70, MinimumLength = 1, ErrorMessage = "Your email size must be between 8 and 70 characters.")]
+        [StringLength(150, MinimumLength = 1, ErrorMessage = "Your email size must be between 8 and 150 characters.")]
         [EmailAddress]
         public string Email { get; set; }//
         [Required]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }//
         [Required]
-        [CreditCard]
         public double Creditcard { get; set; }//
         [Required]
         [Range(0, 999, ErrorMessage = "You must specify a number between 0 and 999")]
         public double CreditcardSecurityCode { get; set; }//
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/yyyy}")]
         public DateTime CredicardExpirationDate { get; set; }
 
         // Relational Properties

@@ -20,10 +20,55 @@ namespace SeboProject.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var seboDbContext = _context.Course.Include(c => c.Institution).Include(c => c.StudyArea);
-            return View(await seboDbContext.ToListAsync());
+             var seboDbContext = _context.Course.Include(c => c.Institution).Include(c => c.StudyArea);
+            //var courses = (from s in seboDbContext orderby s.Institution.InstitutionName, s.StudyArea.StudyAreaName, s.CourseName select s).ToListAsync();
+            var courses = (from s in seboDbContext select s);
+
+            switch (sortOrder)
+            {
+                case "Institution_asc":
+                    ViewData["Institution"] = "Institution_desc";
+                    //ViewData["StudyArea"] = "StudyArea_asc";
+                    //ViewData["CourseName"] = "Course_asc";
+                    courses = courses.OrderByDescending(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
+                    break;
+                case "Institution_desc":
+                    ViewData["Institution"] = "Institution_asc";
+                    //ViewData["StudyArea"] = "StudyArea_asc";
+                    //ViewData["CourseName"] = "Course_asc";
+                    courses = courses.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
+                    break;
+                case "StudyArea_asc":
+                    ViewData["StudyArea"] = "StudyArea_desc";
+                    //ViewData["Institution"] = "";
+                    //ViewData["CourseName"] = "Course_asc";
+                    courses = courses.OrderByDescending(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
+                    break;
+                case "StudyArea_desc":
+                    ViewData["StudyArea"] = "StudyArea_asc";
+                    //ViewData["Institution"] = "";
+                    //ViewData["CourseName"] = "Course_asc";
+                    courses = courses.OrderBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
+                    break;
+                case "Course_asc":
+                    ViewData["CourseName"] = "Course_desc";
+                    courses = courses.OrderByDescending(c => c.CourseName);
+                    break;
+                case "Course_desc":
+                    ViewData["CourseName"] = "Course_asc";
+                    courses = courses.OrderBy(c => c.CourseName);
+                    break;
+                default:
+                    ViewData["Institution"] = "Institution_asc";
+                    ViewData["StudyArea"] = "StudyArea_asc";
+                    ViewData["CourseName"] = "Course_asc";
+                    courses = courses.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
+                    break;
+
+            }
+            return View(await courses.ToListAsync());
         }
 
         // GET: Courses/Details/5
@@ -49,8 +94,8 @@ namespace SeboProject.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
-            ViewData["InstitutionId"] = new SelectList(_context.Institution, "InstitutionId", "InstitutionName");
-            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName");
+            ViewData["InstitutionId"] = new SelectList(_context.Institution.OrderBy(i=>i.InstitutionName), "InstitutionId", "InstitutionName");
+            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea.OrderBy(s => s.StudyAreaName), "StudyAreaId", "StudyAreaName");
             return View();
         }
 
@@ -67,8 +112,8 @@ namespace SeboProject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InstitutionId"] = new SelectList(_context.Institution, "InstitutionId", "InstitutionName", course.InstitutionId);
-            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", course.StudyAreaId);
+            ViewData["InstitutionId"] = new SelectList(_context.Institution.OrderBy(i => i.InstitutionName), "InstitutionId", "InstitutionName");
+            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea.OrderBy(s => s.StudyAreaName), "StudyAreaId", "StudyAreaName");
             return View(course);
         }
 
@@ -85,8 +130,8 @@ namespace SeboProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["InstitutionId"] = new SelectList(_context.Institution, "InstitutionId", "InstitutionName", course.InstitutionId);
-            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", course.StudyAreaId);
+            ViewData["InstitutionId"] = new SelectList(_context.Institution.OrderBy(i => i.InstitutionName), "InstitutionId", "InstitutionName");
+            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea.OrderBy(s => s.StudyAreaName), "StudyAreaId", "StudyAreaName");
             return View(course);
         }
 
@@ -122,8 +167,8 @@ namespace SeboProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InstitutionId"] = new SelectList(_context.Institution, "InstitutionId", "InstitutionName", course.InstitutionId);
-            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", course.StudyAreaId);
+            ViewData["InstitutionId"] = new SelectList(_context.Institution.OrderBy(i => i.InstitutionName), "InstitutionId", "InstitutionName");
+            ViewData["StudyAreaId"] = new SelectList(_context.StudyArea.OrderBy(s => s.StudyAreaName), "StudyAreaId", "StudyAreaName");
             return View(course);
         }
 

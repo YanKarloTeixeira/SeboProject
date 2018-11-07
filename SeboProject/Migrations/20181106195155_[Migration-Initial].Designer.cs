@@ -10,7 +10,7 @@ using SeboProject.Data;
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    [Migration("20181105090635_[Migration-Initial]")]
+    [Migration("20181106195155_[Migration-Initial]")]
     partial class MigrationInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -473,7 +473,7 @@ namespace SeboProject.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(70);
+                        .HasMaxLength(150);
 
                     b.Property<string>("FirstName")
                         .IsRequired()

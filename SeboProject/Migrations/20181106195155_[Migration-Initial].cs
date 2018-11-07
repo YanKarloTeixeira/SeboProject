@@ -269,7 +269,7 @@ namespace SeboProject.Migrations
                     Number = table.Column<string>(nullable: true),
                     AddressComplement = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: false),
-                    Email = table.Column<string>(maxLength: 70, nullable: false),
+                    Email = table.Column<string>(maxLength: 150, nullable: false),
                     Phone = table.Column<string>(nullable: false),
                     Creditcard = table.Column<double>(nullable: false),
                     CreditcardSecurityCode = table.Column<double>(nullable: false),

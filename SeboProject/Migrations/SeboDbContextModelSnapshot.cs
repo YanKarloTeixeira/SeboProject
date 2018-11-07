@@ -471,7 +471,7 @@ namespace SeboProject.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(70);
+                        .HasMaxLength(150);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
