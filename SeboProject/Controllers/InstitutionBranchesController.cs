@@ -20,10 +20,38 @@ namespace SeboProject.Controllers
         }
 
         // GET: InstitutionBranches
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
             var seboDbContext = _context.InstitutionBranch.Include(i => i.Institution);
-            return View(await seboDbContext.ToListAsync());
+            var branches = (from b in seboDbContext select b);
+
+            switch (sortOrder)
+            {
+                case "Institution_asc":
+                    ViewData["Institution"] = "Institution_desc";
+                    branches = branches.OrderByDescending(c => c.Institution.InstitutionName).ThenBy(c => c.InstitutionBranchName);
+                    break;
+                case "Institution_desc":
+                    ViewData["Institution"] = "Institution_asc";
+                    branches = branches.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.InstitutionBranchName);
+                    break;
+                case "Branch_asc":
+                    ViewData["Branch"] = "Branch_desc";
+                    branches = branches.OrderByDescending(c => c.InstitutionBranchName);
+                    break;
+                case "Branch_desc":
+                    ViewData["Branch"] = "Branch_asc";
+                    branches = branches.OrderBy(c => c.InstitutionBranchName);
+                    break;
+                default:
+                    ViewData["Institution"] = "Institution_asc";
+                    ViewData["Branch"] = "Branch_asc";
+                    branches = branches.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.InstitutionBranchName);
+                    break;
+            }
+            return View(await branches.ToListAsync());
+
+
         }
 
         // GET: InstitutionBranches/Details/5

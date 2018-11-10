@@ -46,12 +46,11 @@ namespace SeboProject.Models
         public string Phone { get; set; }//
         [Required]
         public double Creditcard { get; set; }//
-        [Required]
-        [Range(0, 999, ErrorMessage = "You must specify a number between 0 and 999")]
-        public double CreditcardSecurityCode { get; set; }//
 
-        [DataType(DataType.Date)]
-        public DateTime CredicardExpirationDate { get; set; }
+        [Required]
+        [StringLength(22, MinimumLength = 1, ErrorMessage = "The size of your name on the credicart  must be at maximum of  22 characters.")]
+        public double CreditcardName { get; set; }//
+
 
         // Relational Properties
         public int LocalizationId { get; set; }

@@ -9,6 +9,16 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-actions  no-color">
+        <p>
+            Filter:  <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn  btn-default" />  |
+            <a asp-action="Index">All Records</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -55,53 +65,54 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentForm)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CancelationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CanfirmationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsConfirmedByBuyer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Book.ISBN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Buyer.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seller.UserName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn-warning">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId" class="btn-info">Details</a>|
-                <a asp-action="Delete" asp-route-id="@item.OrderId"class="btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentForm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CancelationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CanfirmationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsConfirmedByBuyer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Buyer.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seller.UserName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn-warning">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OrderId" class="btn-info">Details</a>|
+                    <a asp-action="Delete" asp-route-id="@item.OrderId" class="btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

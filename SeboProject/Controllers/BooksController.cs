@@ -19,11 +19,27 @@ namespace SeboProject.Controllers
             _context = context;
         }
 
+
+        public ActionResult Index2()
+        {
+            Console.WriteLine("Test");
+            return View();
+        }
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, int StudyAreaDropdown, int PublisherDropdown)
         {
             var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.Seller).Include(b => b.StudyArea);
+
+            
+            //var studyArea = (from s in seboDbContext select new { s.StudyAreaId, s.StudyArea.StudyAreaName });
+            var studyAreas = (from s in _context.StudyArea orderby s.StudyAreaName  select new { s.StudyAreaId, s.StudyAreaName }).ToList();
+            ViewData["studyAreaFilter"] = new SelectList(studyAreas, "StudyAreaId", "StudyAreaName");
+
+
+
             return View(await seboDbContext.ToListAsync());
+
+
         }
 
         // GET: Books/Details/5

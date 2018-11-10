@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeboProject.Data;
 using SeboProject.Models;
+using SeboProject.Utilities;
 
 namespace SeboProject.Controllers
 {
@@ -20,56 +21,45 @@ namespace SeboProject.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string currentSearchString, string SearchString, int StudyAreaFilter, int InstitutionFilter, int? Page)
         {
-             var seboDbContext = _context.Course.Include(c => c.Institution).Include(c => c.StudyArea);
-            //var courses = (from s in seboDbContext orderby s.Institution.InstitutionName, s.StudyArea.StudyAreaName, s.CourseName select s).ToListAsync();
+            var seboDbContext = _context.Course.Include(c => c.Institution).Include(c => c.StudyArea);
             var courses = (from s in seboDbContext select s);
 
-            switch (sortOrder)
-            {
-                case "Institution_asc":
-                    ViewData["Institution"] = "Institution_desc";
-                    //ViewData["StudyArea"] = "StudyArea_asc";
-                    //ViewData["CourseName"] = "Course_asc";
-                    courses = courses.OrderByDescending(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
-                    break;
-                case "Institution_desc":
-                    ViewData["Institution"] = "Institution_asc";
-                    //ViewData["StudyArea"] = "StudyArea_asc";
-                    //ViewData["CourseName"] = "Course_asc";
-                    courses = courses.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
-                    break;
-                case "StudyArea_asc":
-                    ViewData["StudyArea"] = "StudyArea_desc";
-                    //ViewData["Institution"] = "";
-                    //ViewData["CourseName"] = "Course_asc";
-                    courses = courses.OrderByDescending(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
-                    break;
-                case "StudyArea_desc":
-                    ViewData["StudyArea"] = "StudyArea_asc";
-                    //ViewData["Institution"] = "";
-                    //ViewData["CourseName"] = "Course_asc";
-                    courses = courses.OrderBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
-                    break;
-                case "Course_asc":
-                    ViewData["CourseName"] = "Course_desc";
-                    courses = courses.OrderByDescending(c => c.CourseName);
-                    break;
-                case "Course_desc":
-                    ViewData["CourseName"] = "Course_asc";
-                    courses = courses.OrderBy(c => c.CourseName);
-                    break;
-                default:
-                    ViewData["Institution"] = "Institution_asc";
-                    ViewData["StudyArea"] = "StudyArea_asc";
-                    ViewData["CourseName"] = "Course_asc";
-                    courses = courses.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
-                    break;
+            if (SearchString != null) Page = 1; else currentSearchString = SearchString;
 
-            }
-            return View(await courses.ToListAsync());
+
+            // Applying filters on the table
+            if (!String.IsNullOrEmpty(SearchString)) courses = courses.Where(c => c.CourseName.Contains(SearchString));
+            if (InstitutionFilter != 0) courses = courses.Where(c => c.InstitutionId == InstitutionFilter);
+            if (StudyAreaFilter != 0) courses = courses.Where(c => c.StudyAreaId == StudyAreaFilter);
+
+
+            courses = OrderingCourses.Do(courses, sortOrder);
+            //////////////////////////////////////
+            //Preparing Dropboxes 
+            //////////////////////////////////////
+            var StudyAreas = (from s in courses orderby s.StudyArea.StudyAreaName select new { s.StudyAreaId, s.StudyArea.StudyAreaName }).ToList().Distinct();
+            var Institutions = (from i in courses orderby i.Institution.InstitutionName select new { i.InstitutionId, i.Institution.InstitutionName }).ToList().Distinct();
+
+            ViewData["StudyAreaFilter"] = new SelectList(StudyAreas, "StudyAreaId", "StudyAreaName");
+            ViewData["InstitutionFilter"] = new SelectList(Institutions, "InstitutionId", "InstitutionName");
+            //////////////////////////////////////
+
+
+            ViewData["SearchString"] = SearchString;
+            ViewData["Institution"] = OrderingCourses.NewOrder(sortOrder, "Institution");
+            ViewData["StudyArea"] = OrderingCourses.NewOrder(sortOrder, "StudyArea");
+            ViewData["CourseName"] = OrderingCourses.NewOrder(sortOrder, "CourseName");
+
+            //return View(await courses.ToListAsync());
+            int PageSize = 14;
+            return View(await Pagination<Course>.CreateAsync(courses.AsNoTracking(), Page ?? 1, PageSize));
+
         }
+
+
+
 
         // GET: Courses/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -94,7 +84,7 @@ namespace SeboProject.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
-            ViewData["InstitutionId"] = new SelectList(_context.Institution.OrderBy(i=>i.InstitutionName), "InstitutionId", "InstitutionName");
+            ViewData["InstitutionId"] = new SelectList(_context.Institution.OrderBy(i => i.InstitutionName), "InstitutionId", "InstitutionName");
             ViewData["StudyAreaId"] = new SelectList(_context.StudyArea.OrderBy(s => s.StudyAreaName), "StudyAreaId", "StudyAreaName");
             return View();
         }

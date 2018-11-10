@@ -460,11 +460,10 @@ namespace SeboProject.Migrations
 
                     b.Property<int?>("CourseId");
 
-                    b.Property<DateTime>("CredicardExpirationDate");
-
                     b.Property<double>("Creditcard");
 
-                    b.Property<double>("CreditcardSecurityCode");
+                    b.Property<double>("CreditcardName")
+                        .HasMaxLength(22);
 
                     b.Property<string>("Discriminator")
                         .IsRequired();

@@ -10,7 +10,7 @@ using SeboProject.Data;
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    [Migration("20181106195155_[Migration-Initial]")]
+    [Migration("20181109183827_[Migration-Initial]")]
     partial class MigrationInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -462,11 +462,10 @@ namespace SeboProject.Migrations
 
                     b.Property<int?>("CourseId");
 
-                    b.Property<DateTime>("CredicardExpirationDate");
-
                     b.Property<double>("Creditcard");
 
-                    b.Property<double>("CreditcardSecurityCode");
+                    b.Property<double>("CreditcardName")
+                        .HasMaxLength(22);
 
                     b.Property<string>("Discriminator")
                         .IsRequired();

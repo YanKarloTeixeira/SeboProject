@@ -50,7 +50,7 @@ namespace SeboProject.Controllers
         public IActionResult Create()
         {
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName");
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode");
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardSecurityCode,CredicardExpirationDate,LocalizationId,InstitutionBranchId")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode", user.LocalizationId);
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
             return View(user);
         }
 
@@ -86,7 +86,7 @@ namespace SeboProject.Controllers
                 return NotFound();
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode", user.LocalizationId);
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
             return View(user);
         }
 
@@ -95,7 +95,7 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardSecurityCode,CredicardExpirationDate,LocalizationId,InstitutionBranchId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
         {
             if (id != user.UserId)
             {
@@ -123,7 +123,7 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PostalCode", user.LocalizationId);
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
             return View(user);
         }
 

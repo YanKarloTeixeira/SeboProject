@@ -4,40 +4,62 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>BOOKS</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Book</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-actions  no-color">
+        <p>
+            Filter:  <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn  btn-default" />  |
+            <a asp-action="Index">All Records</a>
+        </p>
+        <div class="form-group">
+            @Html.DropDownList("StudyAreaDropdown", ((IEnumerable<SelectListItem>)ViewData["studyAreaFilter"]), "Select");
+            @Html.DropDownList("PublisherDropdown", ((IEnumerable<SelectListItem>)ViewData["studyAreaFilter"]), "Select");
+
+            @*, new
+        {
+            title = "Pick Batch",
+            onchange = "submit();"
+        })*@
+        </div>
+
+    </div>
+        
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Title"]">@Html.DisplayNameFor(model => model.Title)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ISBN)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Isbn"]">@Html.DisplayNameFor(model => model.ISBN)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Publisher"]">@Html.DisplayNameFor(model => model.Publisher)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Edition)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Edition"]">@Html.DisplayNameFor(model => model.Edition)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Quantity"]">@Html.DisplayNameFor(model => model.Quantity)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Price"]">@Html.DisplayNameFor(model => model.Price)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Visualizations)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Visualizations"]">@Html.DisplayNameFor(model => model.Visualizations)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QuantitySold)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["QuantitySold"]">@Html.DisplayNameFor(model => model.QuantitySold)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Blocked)
@@ -46,13 +68,13 @@
                 @Html.DisplayNameFor(model => model.IsWaitList)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CReationDate"]">@Html.DisplayNameFor(model => model.CreationDate)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookCondition)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["BookCondition"]">@Html.DisplayNameFor(model => model.BookCondition)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StudyArea)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StudyArea"]">@Html.DisplayNameFor(model => model.StudyArea)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Seller)
@@ -61,59 +83,60 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ISBN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publisher)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Edition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Visualizations)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantitySold)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Blocked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWaitList)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookCondition.Condition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seller.UserName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BookId" class="btn-warning">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookId" class="btn-info">Details</a>|
-                <a asp-action="Delete" asp-route-id="@item.BookId" class="btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visualizations)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantitySold)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Blocked)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsWaitList)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookCondition.Condition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seller.UserName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BookId" class="btn-warning">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BookId" class="btn-info">Details</a>|
+                    <a asp-action="Delete" asp-route-id="@item.BookId" class="btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
