@@ -12,24 +12,25 @@ namespace SeboProject.Utilities
 
         public static IQueryable<Course> Do(IQueryable<Course> courses, string sortOrder)
         {
-            switch (sortOrder)
+            if (String.IsNullOrEmpty(sortOrder)) sortOrder = "institution_desc";
+            switch (sortOrder.ToLower())
             {
-                case "Institution_asc":
+                case "institution_asc":
                     courses = courses.OrderByDescending(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
                     break;
-                case "Institution_desc":
+                case "institution_desc":
                     courses = courses.OrderBy(c => c.Institution.InstitutionName).ThenBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
                     break;
-                case "StudyArea_asc":
+                case "studyarea_asc":
                     courses = courses.OrderByDescending(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
                     break;
-                case "StudyArea_desc":
+                case "studyarea_desc":
                     courses = courses.OrderBy(c => c.StudyArea.StudyAreaName).ThenBy(c => c.CourseName);
                     break;
-                case "Course_asc":
+                case "course_asc":
                     courses = courses.OrderByDescending(c => c.CourseName);
                     break;
-                case "Course_desc":
+                case "course_desc":
                     courses = courses.OrderBy(c => c.CourseName);
                     break;
                 default:
@@ -43,21 +44,21 @@ namespace SeboProject.Utilities
         public static string NewOrder(string SortOrder, string ColumnName)
         {
             string NewOrder = null;
-            switch(ColumnName) { 
+            switch (ColumnName.ToLower()) { 
             
-                case "Institution":
+                case "institution":
                     if(SortOrder== "Institution_asc")
                         NewOrder ="Institution_desc";
                     else 
                         NewOrder = "Institution_asc";
                     break;
-                case "StudyArea":
+                case "studyarea":
                     if (SortOrder == "StudyArea_asc")
                         NewOrder = "StudyArea_desc";
                     else
                         NewOrder = "StudyArea_asc";
                     break;
-                case "CourseName":
+                case "coursename":
                     if (SortOrder == "Course_asc")
                         NewOrder = "Course_desc";
                     else

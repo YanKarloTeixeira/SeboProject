@@ -2,7 +2,7 @@
 @model Pagination<SeboProject.Models.Course>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Courses";
 
 }
 
@@ -25,15 +25,12 @@
     <thead>
         <tr>
             <th>
-                @*<a asp-action="Index" asp-route-sortOrder="@ViewData[" Institution"]"> @Html.DisplayNameFor(model => model..Institution)</a>*@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["Institution"]">Institution</a>
             </th>
             <th>
-                @*<a asp-action="Index" asp-route-sortOrder="@ViewData[" StudyArea"]"> @Html.DisplayNameFor(model => model.StudyArea)</a>*@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["StudyArea"]">StudyArea</a>
             </th>
             <th>
-                @*<a asp-action="Index" asp-route-sortOrder="@ViewData[" CourseName"]"> @Html.DisplayNameFor(model => model.CourseName)</a>*@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CourseName"]">CourseName</a>
             </th>
             <th></th>

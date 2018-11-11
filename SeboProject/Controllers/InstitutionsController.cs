@@ -20,9 +20,33 @@ namespace SeboProject.Controllers
         }
 
         // GET: Institutions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentSearchString, string SearchString,  int? Page)
         {
-            return View(await _context.Institution.ToListAsync());
+            int PageSize = 14; // How many listed items per page definition
+            var seboDbContext = _context.Institution;
+            var BodyList = (from p in seboDbContext select p); // Item to be listed on the view
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                Page = 1;
+                BodyList = BodyList.Where(p => p.InstitutionName.Contains(SearchString));                                                                               
+            }
+            else currentSearchString = SearchString;
+
+            /* Ordering before list on the view */
+            BodyList = sortOrder=="Institution_desc" ? BodyList.OrderBy(p=>p.InstitutionName) : BodyList.OrderByDescending(p => p.InstitutionName);
+
+
+
+            ViewData["SearchString"] = SearchString;
+            /*
+             * Adding actual dropboxes selection because in case of a column ordering (by clicking on the column name) 
+             * the dropbox filtering values would be lost.
+             */
+            ViewData["InstitutionOrder"] = sortOrder == "Institution_asc" ? "Institution_desc" : "Institution_asc";
+
+            return View(await Utilities.Pagination<Institution>.CreateAsync(BodyList.AsNoTracking(), Page ?? 1, PageSize));
+
         }
 
         // GET: Institutions/Details/5

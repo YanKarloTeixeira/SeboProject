@@ -18,8 +18,8 @@ namespace SeboProject.Models
 
         [Required]
         public int InstitutionId { get; set; }
-        public Institution Institution { get; set; }
+        public virtual Institution Institution { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

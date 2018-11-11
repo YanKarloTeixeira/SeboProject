@@ -2,11 +2,11 @@
 @model Pagination<SeboProject.Models.Localization>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Postal Codes";
 
 }
 
-<h2>Postal Codes Management</h2>
+<h2>Postal Codes</h2>
 
 <p>
     <a asp-action="Create">Add a New Postal Code</a>
@@ -14,7 +14,7 @@
 <form asp-action="Index" method="get">
     <div class="form-actions  no-color">
         <p>
-            Location Filter:  <input type="text" name="SearchString" value="@ViewData["SearchString"]" />
+            Postal Code Filter:  <input type="text" name="SearchString" value="@ViewData["SearchString"]" />
             <input type="submit" value="Search" class="btn  btn-default" />  |
             <a asp-action="Index">All records</a> | Records Displayed @Model.TotalR
         </p>

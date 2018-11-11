@@ -13,6 +13,6 @@ namespace SeboProject.Models
         [StringLength(40, MinimumLength = 1, ErrorMessage = "The intitution name must be between 1 and 40 characters.")]
         public string InstitutionName { get; set; }
         public virtual ICollection<InstitutionBranch> InstitutionBranches { get; set; }
-        public virtual ICollection<Course> CourseNames { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

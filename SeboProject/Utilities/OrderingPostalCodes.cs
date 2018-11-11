@@ -10,24 +10,25 @@ namespace SeboProject.Utilities
     {
         public static IQueryable<Localization> Do(IQueryable<Localization> PostalCodes, string sortOrder)
         {
-            switch (sortOrder)
+            if (String.IsNullOrEmpty(sortOrder)) sortOrder = "postalCode_desc";
+            switch (sortOrder.ToLower())
             {
-                case "PostalCode_asc":
+                case "postalCode_asc":
                     PostalCodes = PostalCodes.OrderByDescending(p => p.PostalCode);
                     break;
-                case "PostalCode_desc":
+                case "postalCode_desc":
                     PostalCodes = PostalCodes.OrderBy(p => p.PostalCode);
                     break;
-                case "Province_asc":
+                case "province_asc":
                     PostalCodes = PostalCodes.OrderByDescending(p => p.Province).ThenBy(p => p.PlaceName);
                     break;
-                case "Province_desc":
+                case "province_desc":
                     PostalCodes = PostalCodes.OrderBy(p => p.Province).ThenBy(p => p.PlaceName);
                     break;
-                case "PlaceName_asc":
+                case "placename_asc":
                     PostalCodes = PostalCodes.OrderByDescending(p => p.PlaceName);
                     break;
-                case "PlaceName_desc":
+                case "placename_desc":
                     PostalCodes = PostalCodes.OrderBy(p => p.PlaceName);
                     break;
                 default:
@@ -41,22 +42,22 @@ namespace SeboProject.Utilities
         public static string NewOrder(string SortOrder, string ColumnName)
         {
             string NewOrder = null;
-            switch (ColumnName)
+            switch (ColumnName.ToLower())
             {
 
-                case "PostalCode":
+                case "postalcode":
                     if (SortOrder == "PostalCode_asc")
                         NewOrder = "PostalCode_desc";
                     else
                         NewOrder = "PostalCode_asc";
                     break;
-                case "Province":
+                case "province":
                     if (SortOrder == "Province_asc")
                         NewOrder = "Province_desc";
                     else
                         NewOrder = "Province_asc";
                     break;
-                case "PlaceName":
+                case "placename":
                     if (SortOrder == "PlaceName_asc")
                         NewOrder = "PlaceName_desc";
                     else

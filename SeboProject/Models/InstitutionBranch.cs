@@ -14,8 +14,7 @@ namespace SeboProject.Models
         public string InstitutionBranchName { get; set; }
         [Required]
         public int InstitutionId { get; set; }
-        public virtual Institution Institution { get; set; }
-
+        public   Institution Institution { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }
