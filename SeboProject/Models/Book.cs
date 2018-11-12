@@ -11,7 +11,7 @@ namespace SeboProject.Models
     {
         public int BookId { get; set; }
 
-
+        public string PhotoFileName { get { return PhotoFileName; } set { PhotoFileName = "Book" + BookId; } }
         [Required(ErrorMessage = "You must inform the book's title.")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "The book's title size must be between 1 and 100 characters.")]
         public string Title { get; set; } //
@@ -65,5 +65,12 @@ namespace SeboProject.Models
 
         public virtual ICollection<Order>   Orders { get; set; }
 
+        
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female
     }
 }

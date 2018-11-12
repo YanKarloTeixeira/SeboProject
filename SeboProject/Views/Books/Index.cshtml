@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SeboProject.Models.Book>
+﻿@using SeboProject.Utilities
+@model Pagination<SeboProject.Models.Book>
 
 @{
     ViewData["Title"] = "Books";
@@ -7,111 +8,96 @@
 <h2>BOOKS</h2>
 
 <p>
-    <a asp-action="Create">Create New Book</a>
+    <a asp-action="Create">Add a New Book</a>
 </p>
 <form asp-action="Index" method="get">
     <div class="form-actions  no-color">
         <p>
-            Filter:  <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+            Book Filter:  <input type="text" name="SearchString" value="@ViewData["SearchString"]" />
             <input type="submit" value="Search" class="btn  btn-default" />  |
-            <a asp-action="Index">All Records</a>
+            <a asp-action="Index">All records</a> | Records Displayed @Model.TotalR
         </p>
-        <div class="form-group">
-            @Html.DropDownList("StudyAreaDropdown", ((IEnumerable<SelectListItem>)ViewData["studyAreaFilter"]), "Select");
-            @Html.DropDownList("PublisherDropdown", ((IEnumerable<SelectListItem>)ViewData["studyAreaFilter"]), "Select");
-
-            @*, new
-        {
-            title = "Pick Batch",
-            onchange = "submit();"
-        })*@
-        </div>
-
     </div>
-        
+    @Html.DropDownList("YanFilter", ((IEnumerable<SelectListItem>)ViewData["YanFilter"]), "All", new {
+                           onchange = "submit();"
+                       })
 </form>
-
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Title"]">@Html.DisplayNameFor(model => model.Title)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SellerOrder"]">Seller</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleOrder"]">Title</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Isbn"]">@Html.DisplayNameFor(model => model.ISBN)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IsbnOrder"]">ISBN</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Publisher"]">@Html.DisplayNameFor(model => model.Publisher)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EditionOrder"]">Edition</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Edition"]">@Html.DisplayNameFor(model => model.Edition)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PublisherOrder"]">Publisher</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Quantity"]">@Html.DisplayNameFor(model => model.Quantity)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CreationDateOrder"]">Creation Date</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Price"]">@Html.DisplayNameFor(model => model.Price)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceOrder"]">Price</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Visualizations"]">@Html.DisplayNameFor(model => model.Visualizations)</a>
+                Blocked
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["QuantitySold"]">@Html.DisplayNameFor(model => model.QuantitySold)</a>
+                Is Wait List?
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Blocked)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsWaitList)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StudyAreaOrder"]">Study Area</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["CReationDate"]">@Html.DisplayNameFor(model => model.CreationDate)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["QuantityOrder"]">Quantity</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["BookCondition"]">@Html.DisplayNameFor(model => model.BookCondition)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["VisualizationsOrder"]">Visualizations</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["StudyArea"]">@Html.DisplayNameFor(model => model.StudyArea)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["QuantitySoldOrder"]">QuantitySold</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["BookConditionOrder"]">Book Condition</a>
             </th>
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.DisplayFor(modelItem => item.Seller.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ISBN)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Publisher)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Edition)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Visualizations)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QuantitySold)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Blocked)
@@ -120,16 +106,22 @@
                     @Html.DisplayFor(modelItem => item.IsWaitList)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BookCondition.Condition)
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Seller.UserName)
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visualizations)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantitySold)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookCondition.Condition)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.BookId" class="btn-warning">Edit</a> |
@@ -140,3 +132,33 @@
         }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+
+
+@for (int i = 1; i <= Model.TotalPages; i++)
+{
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@i"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default">
+        @i
+    </a>
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeboProject.Data;
 using SeboProject.Models;
+using SeboProject.Utilities;
 
 namespace SeboProject.Controllers
 {
@@ -18,12 +19,68 @@ namespace SeboProject.Controllers
         {
             _context = context;
         }
-
-        // GET: BookConditions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentSearchString, string SearchString, int BookConditionFilter, int? Page)
         {
-            return View(await _context.BookCondition.ToListAsync());
+            int PageSize = 14; // How many listed items per page definition
+            var seboDbContext = _context.BookCondition;
+            var BodyList = (from p in seboDbContext select p); // Item to be listed on the view
+
+            if (!String.IsNullOrEmpty(sortOrder))
+            {
+                string[] parameter = sortOrder.Split(".");
+                sortOrder = parameter[0];
+                BookConditionFilter = Int32.Parse(parameter[1]);
+            }
+
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                Page = 1;
+                BodyList = BodyList.Where(p => p.Condition.Contains(SearchString));
+            }
+            else currentSearchString = SearchString;
+
+            // Applying text filters on the table - It impacts in all dropboxes and lists
+
+            //Initializing the queries that belong to the dropboxes
+            var _BookConditionFiltered = BodyList;
+
+            // Applying filter over the dropbox query base
+            if (BookConditionFilter != 0)
+            {
+                _BookConditionFiltered = from s in _BookConditionFiltered where (s.BookConditionId == BookConditionFilter) select s;
+            }
+
+            /*
+                Adjusts the BodyList according to the Institution selection 
+                and the BranchName selection 
+            */
+            BodyList = _BookConditionFiltered;
+
+            /* Ordering before list on the view */
+            BodyList = sortOrder == "BookCondition_asc" ? BodyList.OrderByDescending(s => s.Condition) : BodyList.OrderBy(s => s.Condition);
+
+            /*
+                Preparing DROPBOXLISTs
+            */
+            var _BookCondition = _BookConditionFiltered.ToList();
+            ViewData["BookConditionFilter"] = new SelectList(_BookCondition, "BookConditionId", "Condition");
+            ViewData["SearchString"] = SearchString;
+
+            /*
+             * Adding actual dropboxes selection because in case of a column ordering (by clicking on the column name) 
+             * the dropbox filtering values would be lost.
+             */
+            ViewData["BookConditionOrder"] = (sortOrder == "BookCondition_asc" ? "BookCondition_desc" : "BookCondition_asc") + "." + BookConditionFilter;
+
+            return View(await Pagination<BookCondition>.CreateAsync(BodyList.AsNoTracking(), Page ?? 1, PageSize));
+
         }
+        // GET: BookConditions
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.BookCondition.ToListAsync());
+        //}
 
         // GET: BookConditions/Details/5
         public async Task<IActionResult> Details(int? id)

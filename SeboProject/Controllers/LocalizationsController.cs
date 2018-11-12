@@ -20,11 +20,7 @@ namespace SeboProject.Controllers
             _context = context;
         }
 
-        // GET: Localizations
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _context.Localization.ToListAsync());
-        //}
+        
         public async Task<IActionResult> Index(string sortOrder, string currentSearchString, string SearchString, int ProvinceFilter, int PlaceNameFilter, int? Page)
         {
             int PageSize = 14; // How many listed items per page definition
