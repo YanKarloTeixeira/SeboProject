@@ -53,45 +53,12 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Visualizations" class="control-label"></label>
-                <input asp-for="Visualizations" class="form-control" />
-                <span asp-validation-for="Visualizations" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuantitySold" class="control-label"></label>
-                <input asp-for="QuantitySold" class="form-control" />
-                <span asp-validation-for="QuantitySold" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Blocked" /> @Html.DisplayNameFor(model => model.Blocked)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsWaitList" /> @Html.DisplayNameFor(model => model.IsWaitList)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="BookConditionId" class="control-label"></label>
                 <select asp-for="BookConditionId" class="form-control" asp-items="ViewBag.BookConditionId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="StudyAreaId" class="control-label"></label>
                 <select asp-for="StudyAreaId" class="form-control" asp-items="ViewBag.StudyAreaId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
