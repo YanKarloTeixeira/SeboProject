@@ -48,6 +48,7 @@ namespace SeboProject.Data
         public DbSet<SeboProject.Models.Localization> Localization { get; set; }
         public DbSet<SeboProject.Models.StudyArea> StudyArea { get; set; }
         public DbSet<SeboProject.Models.User> User { get; set; }
+        public DbSet<SeboProject.Models.Seller> Seller { get; set; }
 
 
     }

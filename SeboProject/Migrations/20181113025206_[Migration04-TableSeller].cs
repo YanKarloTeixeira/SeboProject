@@ -2,7 +2,7 @@
 
 namespace SeboProject.Migrations
 {
-    public partial class Migration01 : Migration
+    public partial class Migration04TableSeller : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

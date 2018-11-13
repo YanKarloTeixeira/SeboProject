@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace SeboProject.Models
 {
     public class Book
     {
         public int BookId { get; set; }
+        public byte[] PhotoFileName { get; set; }
 
-        public string PhotoFileName { get { return PhotoFileName; } set { PhotoFileName = "Book" + BookId; } }
         [Required(ErrorMessage = "You must inform the book's title.")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "The book's title size must be between 1 and 100 characters.")]
         public string Title { get; set; } //
@@ -21,7 +22,6 @@ namespace SeboProject.Models
 
         [Required(ErrorMessage = "You must inform the book's ISBN.")]
         [StringLength(13, MinimumLength = 10, ErrorMessage = "The book's ISBN size must be between 10 and 13 characters.")]
-        [RegularExpression("^[0-9]$")]
         public string ISBN { get; set; }//
 
 
@@ -60,8 +60,8 @@ namespace SeboProject.Models
         public int StudyAreaId { get; set; } // Informs which area of study the subject belongs  Engeneering, Math, IT, Bio, Humans, Law, etc
         public virtual StudyArea StudyArea { get; set; }
 
-        public int SellerId { get; set; }
-        public virtual Seller Seller { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
 
         public virtual ICollection<Order>   Orders { get; set; }
 

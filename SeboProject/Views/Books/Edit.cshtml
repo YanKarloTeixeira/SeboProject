@@ -10,9 +10,24 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form method="post" enctype="multipart/form-data" asp-controller="Books" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BookId" />
+            <div class="form-group">
+                @{
+                    if (Model.PhotoFileName != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.PhotoFileName);
+                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                        <img src="@imgsrc" style="max-width:100px; max-height:100px;" />
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="PhotoFileName" class="control-label"></label>
+                <input type="file" accept="image/*" asp-for="PhotoFileName" class="form-control" />
+                <span asp-validation-for="PhotoFileName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -88,9 +103,9 @@
                 <span asp-validation-for="StudyAreaId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SellerId" class="control-label"></label>
-                <select asp-for="SellerId" class="form-control" asp-items="ViewBag.SellerId"></select>
-                <span asp-validation-for="SellerId" class="text-danger"></span>
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

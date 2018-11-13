@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeboProject.Data;
 
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    partial class SeboDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181113033932_Migration07")]
+    partial class Migration07
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

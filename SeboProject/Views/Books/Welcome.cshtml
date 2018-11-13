@@ -13,52 +13,36 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PhotoFileName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ISBN)
+                ISBN
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher)
+                Publisher
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Edition)
+                Edition
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                Qty
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Visualizations)
+                Visualiz.
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QuantitySold)
+                Condition
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Blocked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWaitList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookCondition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StudyArea)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
+                Study Area
             </th>
             <th></th>
         </tr>
@@ -103,30 +87,14 @@
                 @Html.DisplayFor(modelItem => item.Visualizations)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.QuantitySold)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Blocked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWaitList)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.BookCondition.Condition)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.CreditcardName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.BookId">Buy It</a>
             </td>
         </tr>
 }

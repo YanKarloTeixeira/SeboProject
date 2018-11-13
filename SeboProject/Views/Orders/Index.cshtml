@@ -56,10 +56,10 @@
                 @Html.DisplayNameFor(model => model.Book)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Buyer)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                @Html.DisplayNameFor(model => model.Book.User)
             </th>
             <th></th>
         </tr>
@@ -102,10 +102,10 @@
                     @Html.DisplayFor(modelItem => item.Book.ISBN)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Buyer.UserName)
+                    @Html.DisplayFor(modelItem => item.User.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Seller.UserName)
+                    @Html.DisplayFor(modelItem => item.Book.User.UserName)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn-warning">Edit</a> |

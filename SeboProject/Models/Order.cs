@@ -28,12 +28,10 @@ namespace SeboProject.Models
         public int BookId { get; set; }
         public virtual Book Book { get; set; }
 
-        public int BuyerId { get; set; }
-        [ForeignKey("BuyerId")]
-        public Buyer Buyer { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
         public int SellerId { get; set; }
-        [ForeignKey("SellerId")]
-        public Seller Seller { get; set; }
+
         public virtual ICollection<Claim> Claims { get; set; }
 
 

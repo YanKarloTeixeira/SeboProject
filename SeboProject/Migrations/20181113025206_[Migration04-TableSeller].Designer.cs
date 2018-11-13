@@ -10,8 +10,8 @@ using SeboProject.Data;
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    [Migration("20181109183827_[Migration-Initial]")]
-    partial class MigrationInitial
+    [Migration("20181113025206_[Migration04-TableSeller]")]
+    partial class Migration04TableSeller
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -210,6 +210,14 @@ namespace SeboProject.Migrations
                         .HasMaxLength(13);
 
                     b.Property<bool>("IsWaitList");
+
+                    b.Property<byte[]>("PhotoFileName");
+
+                    b.Property<string>("PhotoFileName1");
+
+                    b.Property<string>("PhotoFileName2");
+
+                    b.Property<string>("PhotoFileName3");
 
                     b.Property<double>("Price");
 
@@ -464,7 +472,8 @@ namespace SeboProject.Migrations
 
                     b.Property<double>("Creditcard");
 
-                    b.Property<double>("CreditcardName")
+                    b.Property<string>("CreditcardName")
+                        .IsRequired()
                         .HasMaxLength(22);
 
                     b.Property<string>("Discriminator")
@@ -499,6 +508,8 @@ namespace SeboProject.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int>("UserType");
+
+                    b.Property<bool>("isBlocked");
 
                     b.HasKey("UserId");
 
@@ -625,7 +636,7 @@ namespace SeboProject.Migrations
             modelBuilder.Entity("SeboProject.Models.Course", b =>
                 {
                     b.HasOne("SeboProject.Models.Institution", "Institution")
-                        .WithMany("CourseNames")
+                        .WithMany("Courses")
                         .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Restrict);
 

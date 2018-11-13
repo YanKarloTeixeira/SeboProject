@@ -10,8 +10,8 @@ using SeboProject.Data;
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    [Migration("20181111181551_[Migration01]")]
-    partial class Migration01
+    [Migration("20181112234807_[Migration01-TableUser_CrediCardName]")]
+    partial class Migration01TableUser_CrediCardName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -210,6 +210,12 @@ namespace SeboProject.Migrations
                         .HasMaxLength(13);
 
                     b.Property<bool>("IsWaitList");
+
+                    b.Property<string>("PhotoFileName1");
+
+                    b.Property<string>("PhotoFileName2");
+
+                    b.Property<string>("PhotoFileName3");
 
                     b.Property<double>("Price");
 
@@ -464,7 +470,8 @@ namespace SeboProject.Migrations
 
                     b.Property<double>("Creditcard");
 
-                    b.Property<double>("CreditcardName")
+                    b.Property<string>("CreditcardName")
+                        .IsRequired()
                         .HasMaxLength(22);
 
                     b.Property<string>("Discriminator")

@@ -30,7 +30,7 @@ namespace SeboProject.Models
         [StringLength(90)]
         public string Address { get; set; }//
 
-        [RegularExpression("^[0-9]{6}$")]
+        
         public string Number { get; set; }//
         public string AddressComplement { get; set; }//
 
@@ -49,9 +49,9 @@ namespace SeboProject.Models
 
         [Required]
         [StringLength(22, MinimumLength = 1, ErrorMessage = "The size of your name on the credicart  must be at maximum of  22 characters.")]
-        public double CreditcardName { get; set; }//
+        public string CreditcardName { get; set; }//
 
-
+        
         // Relational Properties
         public int LocalizationId { get; set; }
         public virtual Localization Localization { get; set; }
@@ -59,6 +59,8 @@ namespace SeboProject.Models
 
         public int InstitutionBranchId { get; set; }
         public virtual InstitutionBranch InstitutionBranch { get; set; }
+
+        public bool isBlocked { get; set; }
 
         public virtual ICollection<Book> Books { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

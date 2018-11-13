@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SeboProject.Migrations
 {
-    public partial class Migration02 : Migration
+    public partial class Migration03TableUser_PhotoFileName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.AddColumn<byte[]>(
                 name: "PhotoFileName",
                 table: "Book",
                 nullable: true);

@@ -22,7 +22,7 @@ namespace SeboProject.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var seboDbContext = _context.Order.Include(o => o.Book).Include(o => o.Buyer).Include(o => o.Seller);
+            var seboDbContext = _context.Order.Include(o => o.Book).Include(o => o.User);
             return View(await seboDbContext.ToListAsync());
         }
 
@@ -36,8 +36,7 @@ namespace SeboProject.Controllers
 
             var order = await _context.Order
                 .Include(o => o.Book)
-                .Include(o => o.Buyer)
-                .Include(o => o.Seller)
+                .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
@@ -70,8 +69,8 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BookId"] = new SelectList(_context.Book, "BookId", "ISBN", order.BookId);
-            ViewData["BuyerId"] = new SelectList(_context.Set<Buyer>(), "UserId", "Discriminator", order.BuyerId);
-            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", order.SellerId);
+            ViewData["BuyerId"] = new SelectList(_context.Set<Buyer>(), "UserId", "Discriminator", order.User.UserName);
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", order.Book.User.UserName);
             return View(order);
         }
 
@@ -89,8 +88,8 @@ namespace SeboProject.Controllers
                 return NotFound();
             }
             ViewData["BookId"] = new SelectList(_context.Book, "BookId", "ISBN", order.BookId);
-            ViewData["BuyerId"] = new SelectList(_context.Set<Buyer>(), "UserId", "Discriminator", order.BuyerId);
-            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", order.SellerId);
+            ViewData["BuyerId"] = new SelectList(_context.Set<Buyer>(), "UserId", "Discriminator", order.UserId);
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", order.Book.UserId);
             return View(order);
         }
 
@@ -127,8 +126,8 @@ namespace SeboProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BookId"] = new SelectList(_context.Book, "BookId", "ISBN", order.BookId);
-            ViewData["BuyerId"] = new SelectList(_context.Set<Buyer>(), "UserId", "Discriminator", order.BuyerId);
-            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", order.SellerId);
+            ViewData["BuyerId"] = new SelectList(_context.Set<Buyer>(), "UserId", "Discriminator", order.UserId);
+            ViewData["SellerId"] = new SelectList(_context.Set<Seller>(), "UserId", "Discriminator", order.Book.UserId);
             return View(order);
         }
 
@@ -142,8 +141,8 @@ namespace SeboProject.Controllers
 
             var order = await _context.Order
                 .Include(o => o.Book)
-                .Include(o => o.Buyer)
-                .Include(o => o.Seller)
+                .Include(o => o.User)
+                .Include(o => o.Book.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {

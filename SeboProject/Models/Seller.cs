@@ -7,5 +7,6 @@ namespace SeboProject.Models
 {
     public class Seller : User
     {
+
     }
 }

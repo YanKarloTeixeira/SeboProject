@@ -10,8 +10,8 @@ using SeboProject.Data;
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    [Migration("20181111194039_[Migration02]")]
-    partial class Migration02
+    [Migration("20181113002217_[Migration02-TableUser_IsBlocked]")]
+    partial class Migration02TableUser_IsBlocked
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -211,7 +211,11 @@ namespace SeboProject.Migrations
 
                     b.Property<bool>("IsWaitList");
 
-                    b.Property<string>("PhotoFileName");
+                    b.Property<string>("PhotoFileName1");
+
+                    b.Property<string>("PhotoFileName2");
+
+                    b.Property<string>("PhotoFileName3");
 
                     b.Property<double>("Price");
 
@@ -466,7 +470,8 @@ namespace SeboProject.Migrations
 
                     b.Property<double>("Creditcard");
 
-                    b.Property<double>("CreditcardName")
+                    b.Property<string>("CreditcardName")
+                        .IsRequired()
                         .HasMaxLength(22);
 
                     b.Property<string>("Discriminator")
@@ -501,6 +506,8 @@ namespace SeboProject.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int>("UserType");
+
+                    b.Property<bool>("isBlocked");
 
                     b.HasKey("UserId");
 

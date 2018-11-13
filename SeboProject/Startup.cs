@@ -67,8 +67,10 @@ namespace SeboProject
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    //template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Books}/{action=Welcome}/{id?}");
             });
+
         }
     }
 }

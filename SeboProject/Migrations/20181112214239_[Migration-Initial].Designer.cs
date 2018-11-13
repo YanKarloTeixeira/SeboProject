@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeboProject.Data;
 
 namespace SeboProject.Migrations
 {
     [DbContext(typeof(SeboDbContext))]
-    partial class SeboDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181112214239_[Migration-Initial]")]
+    partial class MigrationInitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,6 +196,8 @@ namespace SeboProject.Migrations
 
                     b.Property<int>("BookConditionId");
 
+                    b.Property<int?>("BuyerUserId");
+
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<string>("Description")
@@ -207,7 +211,11 @@ namespace SeboProject.Migrations
 
                     b.Property<bool>("IsWaitList");
 
-                    b.Property<byte[]>("PhotoFileName");
+                    b.Property<string>("PhotoFileName1");
+
+                    b.Property<string>("PhotoFileName2");
+
+                    b.Property<string>("PhotoFileName3");
 
                     b.Property<double>("Price");
 
@@ -219,13 +227,13 @@ namespace SeboProject.Migrations
 
                     b.Property<int>("QuantitySold");
 
+                    b.Property<int>("SellerId");
+
                     b.Property<int>("StudyAreaId");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100);
-
-                    b.Property<int>("UserId");
 
                     b.Property<int>("Visualizations");
 
@@ -233,9 +241,11 @@ namespace SeboProject.Migrations
 
                     b.HasIndex("BookConditionId");
 
-                    b.HasIndex("StudyAreaId");
+                    b.HasIndex("BuyerUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SellerId");
+
+                    b.HasIndex("StudyAreaId");
 
                     b.ToTable("Book");
                 });
@@ -389,6 +399,8 @@ namespace SeboProject.Migrations
 
                     b.Property<int>("BookId");
 
+                    b.Property<int>("BuyerId");
+
                     b.Property<DateTime>("CancelationDate");
 
                     b.Property<DateTime>("CanfirmationDate");
@@ -411,11 +423,15 @@ namespace SeboProject.Migrations
 
                     b.Property<string>("Status");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("OrderId");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("SellerId");
 
                     b.HasIndex("UserId");
 
@@ -454,8 +470,7 @@ namespace SeboProject.Migrations
 
                     b.Property<double>("Creditcard");
 
-                    b.Property<string>("CreditcardName")
-                        .IsRequired()
+                    b.Property<double>("CreditcardName")
                         .HasMaxLength(22);
 
                     b.Property<string>("Discriminator")
@@ -491,8 +506,6 @@ namespace SeboProject.Migrations
 
                     b.Property<int>("UserType");
 
-                    b.Property<bool>("isBlocked");
-
                     b.HasKey("UserId");
 
                     b.HasIndex("CourseId");
@@ -504,6 +517,16 @@ namespace SeboProject.Migrations
                     b.ToTable("User");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                });
+
+            modelBuilder.Entity("SeboProject.Models.Buyer", b =>
+                {
+                    b.HasBaseType("SeboProject.Models.User");
+
+
+                    b.ToTable("Buyer");
+
+                    b.HasDiscriminator().HasValue("Buyer");
                 });
 
             modelBuilder.Entity("SeboProject.Models.Seller", b =>
@@ -568,14 +591,19 @@ namespace SeboProject.Migrations
                         .HasForeignKey("BookConditionId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("SeboProject.Models.Buyer")
+                        .WithMany("Books")
+                        .HasForeignKey("BuyerUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeboProject.Models.Seller", "Seller")
+                        .WithMany("Books")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("SeboProject.Models.StudyArea", "StudyArea")
                         .WithMany("Books")
                         .HasForeignKey("StudyAreaId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SeboProject.Models.User", "User")
-                        .WithMany("Books")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -628,7 +656,17 @@ namespace SeboProject.Migrations
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SeboProject.Models.User", "User")
+                    b.HasOne("SeboProject.Models.Buyer", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeboProject.Models.Seller", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeboProject.Models.User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);

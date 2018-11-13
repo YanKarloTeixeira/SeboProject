@@ -307,6 +307,9 @@ namespace SeboProject.Migrations
                 {
                     BookId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PhotoFileName1 = table.Column<string>(nullable: true),
+                    PhotoFileName2 = table.Column<string>(nullable: true),
+                    PhotoFileName3 = table.Column<string>(nullable: true),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     ISBN = table.Column<string>(maxLength: 13, nullable: false),
