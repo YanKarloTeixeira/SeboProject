@@ -26,12 +26,36 @@ namespace SeboProject.Controllers
             return View(await seboDbContext.ToListAsync());
         }
 
+        public Task<IActionResult> UserProfileSelfAdm()
+        {
+            string LogedUser = this.User.Identity.Name;
+            var user = (from s in _context.User where s.UserName == LogedUser select s.UserId).ToList();
+            int UserId = user[0];
+            Task<IActionResult> action = Details(UserId);
+
+            
+            return action;
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["PreviousPage"] = "";
             if (id == null)
             {
-                return NotFound();
+                string LogedUser = this.User.Identity.Name;
+                var u = (from s in _context.User where s.UserName == LogedUser select s.UserId).ToList();
+                int UserId = u[0];
+                if (UserId > 0)
+                {
+                    id = UserId;
+                    ViewData["PreviousPage"] = "Home";
+                }
+                else
+                {
+                    return NotFound();
+                }
+
             }
 
             var user = await _context.User
@@ -77,7 +101,17 @@ namespace SeboProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                string LogedUser = this.User.Identity.Name;
+                var u = (from s in _context.User where s.UserName == LogedUser select s.UserId).ToList();
+                int UserId = u[0];
+                if (UserId > 0)
+                {
+                    id = UserId;
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
 
             var user = await _context.User.FindAsync(id);

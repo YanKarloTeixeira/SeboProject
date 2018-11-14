@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeboProject.Data;
+using SeboProject.Helpers;
 using SeboProject.Models;
 
 namespace SeboProject.Controllers
@@ -22,10 +23,19 @@ namespace SeboProject.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string UserName)
         {
-            var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
-            return View(await seboDbContext.ToListAsync());
+            int UserId = HelperUser.GetUserId(UserName, _context);
+            if(UserId > 0)
+            {
+                var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User).Where(b => b.UserId == UserId);
+                return View(await seboDbContext.ToListAsync());
+            }
+            else {
+                var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
+                return View(await seboDbContext.ToListAsync());
+            }
+
         }
         public async Task<IActionResult> Welcome()
         {
