@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeboProject.Data;
+using SeboProject.Helpers;
 using SeboProject.Models;
 using SeboProject.Utilities;
 
@@ -26,15 +27,44 @@ namespace SeboProject.Controllers
             var seboDbContext = _context.Course.Include(c => c.Institution).Include(c => c.StudyArea);
             var courses = (from s in seboDbContext select s);
 
-            if (SearchString != null) Page = 1; else currentSearchString = SearchString;
+            //if (SearchString == null)
+            //{
+            //    mbox =
+            //}
+            //if (SearchString != null && currentSearchString==null) Page = 1; else currentSearchString = SearchString;
+            if (currentSearchString != null)
+            {
+                string[] m = currentSearchString.Split(".");
+
+                currentSearchString = m[0]; // preserves the current filter typed within the search textbox
+               
+
+                if (SearchString == null)
+                {
+                    SearchString = currentSearchString;
+                }
+                if (StudyAreaFilter == 0)
+                {
+                    InstitutionFilter = Int32.Parse(m[1]);   // preserves the select institution option in the dropdownlist
+                }
+                if (InstitutionFilter == 0)
+                {
+                    StudyAreaFilter = Int32.Parse(m[2]);     // preserves the select Study Area option in the dropdownlist
+                }
+            }
 
 
             // Applying filters on the table
-            if (!String.IsNullOrEmpty(SearchString)) courses = courses.Where(c => c.CourseName.Contains(SearchString));
+            //if (!String.IsNullOrEmpty(SearchString)) courses = courses.Where(c => c.CourseName.Contains(SearchString));
+            if (!String.IsNullOrEmpty(SearchString)) {
+                var myString =  SearchString.Trim().Split(" ");
+                //courses = courses.Where(c => myString.All(m => c.CourseName.ToLower().Contains(m.ToLower())));
+                courses = StringSearch.SearchCourseName(_context, myString).Include(c => c.Institution).Include(c => c.StudyArea);
+             }
             if (InstitutionFilter != 0) courses = courses.Where(c => c.InstitutionId == InstitutionFilter);
             if (StudyAreaFilter != 0) courses = courses.Where(c => c.StudyAreaId == StudyAreaFilter);
 
-
+            
             courses = OrderingCourses.Do(courses, sortOrder);
             //////////////////////////////////////
             //Preparing Dropboxes 
@@ -46,7 +76,7 @@ namespace SeboProject.Controllers
             ViewData["InstitutionFilter"] = new SelectList(Institutions, "InstitutionId", "InstitutionName");
             //////////////////////////////////////
 
-
+            ViewData["CurrentSearchString"] = SearchString + "." + InstitutionFilter + "." + StudyAreaFilter + "." + Page;
             ViewData["SearchString"] = SearchString;
             ViewData["Institution"] = OrderingCourses.NewOrder(sortOrder, "Institution");
             ViewData["StudyArea"] = OrderingCourses.NewOrder(sortOrder, "StudyArea");

@@ -41,6 +41,7 @@ namespace SeboProject.Controllers
                 Page = 1;
                 BodyList = BodyList.Where(p => p.PostalCode.Contains(SearchString) || p.Province.Contains(SearchString) ||
                                                                                               p.PlaceName.Contains(SearchString));
+
             }
             else currentSearchString = SearchString;
 

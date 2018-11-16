@@ -81,7 +81,8 @@
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-page="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   @*asp-route-currentFilter="@ViewData["CurrentFilter"]"*@
+   asp-route-currentSearchString="@ViewData["CurrentSearchString"]"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
@@ -92,7 +93,8 @@
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-page="@i"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       @*asp-route-currentFilter="@ViewData["CurrentFilter"].@ViewData["StringSearch"]"*@
+       asp-route-currentSearchString="@ViewData["CurrentSearchString"]"
        class="btn btn-default">
         @i
 </a>
@@ -100,7 +102,8 @@
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-page="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   @*asp-route-currentFilter="@ViewData["CurrentFilter"].@ViewData["StringSearch"]"*@
+   asp-route-currentSearchString="@ViewData["CurrentSearchString"]"
    class="btn btn-default @nextDisabled">
     Next
 </a>
