@@ -45,6 +45,7 @@ namespace SeboProject.Controllers
             {
                 string LogedUser = this.User.Identity.Name;
                 var u = (from s in _context.User where s.UserName == LogedUser select s.UserId).ToList();
+                if (u.Count() < 1) { return NotFound(); }
                 int UserId = u[0];
                 if (UserId > 0)
                 {
