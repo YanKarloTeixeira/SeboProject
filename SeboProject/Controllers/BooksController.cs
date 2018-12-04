@@ -97,11 +97,17 @@ namespace SeboProject.Controllers
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || id==0)
             {
                 return NotFound();
             }
+            //var bk = (from b in _context.Book where b.BookId == book.BookId select b.PhotoFileName).ToArray();
+            Book bookVisualized = (from b in _context.Book where b.BookId == id
+                            select b).SingleOrDefault();
 
+            bookVisualized.Visualizations++;
+
+            _context.SaveChanges();
             var book = await _context.Book
                 .Include(b => b.BookCondition)
                 .Include(b => b.StudyArea)
@@ -124,25 +130,7 @@ namespace SeboProject.Controllers
             return View();
         }
 
-        // POST: Books/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("BookId,PhotoFileName,Title,Description,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,UserId")] Book book)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(book);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["BookConditionId"] = new SelectList(_context.BookCondition, "BookConditionId", "Condition", book.BookConditionId);
-        //    ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", book.StudyAreaId);
-        //    ViewData["UserId"] = new SelectList(_context.User, "UserId", "CreditcardName", book.UserId);
-        //    return View(book);
-        //}
-
+  
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

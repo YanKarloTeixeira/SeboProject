@@ -46,7 +46,7 @@
                         @*<li><a asp-area="" asp-controller="Claims" asp-action="Index">Claims</a></li>
             <li><a asp-area="" asp-controller="ClaimMediations" asp-action="Index">Claims Mediations</a></li>*@
                         <li><a asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
-                        <li><a asp-area="" asp-controller="Books" asp-action="Index">Books</a></li>
+                        <li><a asp-area="" asp-controller="Books" asp-action="Index"  asp-route-UserName="@this.User.Identity.Name">Books</a></li>
                     }
                     <li><a asp-area="" asp-controller="Users" asp-action="Details">User Profile Adm</a></li>
                     <li><a asp-area="" asp-controller="Books" asp-action="Index" asp-route-UserName="@this.User.Identity.Name">Books for Selling Adm</a></li>
