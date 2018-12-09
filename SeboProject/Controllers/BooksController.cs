@@ -23,18 +23,20 @@ namespace SeboProject.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string UserName)
+        public async Task<IActionResult> Index(string UserName, string sortOrder, string currentSearchString, string SearchString, int StudyAreaFilter, int InstitutionFilter, int? Page)
         {
             int UserId = HelperUser.GetUserId(UserName, _context);
-            if(UserId > 0)
-            {
-                var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User).Where(b => b.UserId == UserId);
-                return View(await seboDbContext.ToListAsync());
-            }
-            else {
-                var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
-                return View(await seboDbContext.ToListAsync());
-            }
+            var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User).Where(b => UserId>0?b.UserId == UserId: b.UserId>0);
+            return View(await seboDbContext.ToListAsync());
+            //if (UserId > 0)
+            //{
+            //    var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User).Where(b => b.UserId == UserId);
+            //    return View(await seboDbContext.ToListAsync());
+            //}
+            //else {
+            //    var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
+            //    return View(await seboDbContext.ToListAsync());
+            //}
 
         }
         public async Task<IActionResult> Welcome()
