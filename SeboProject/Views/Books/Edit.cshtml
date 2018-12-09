@@ -27,6 +27,7 @@
                 <label asp-for="PhotoFileName" class="control-label"></label>
                 <input type="file" accept="image/*" asp-for="PhotoFileName" class="form-control" />
                 <span asp-validation-for="PhotoFileName" class="text-danger"></span>
+                <span>@ViewData["MsgErrorFileSize"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>

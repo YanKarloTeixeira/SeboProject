@@ -1,9 +1,7 @@
 ﻿using SeboProject.Data;
 using SeboProject.Models;
-using System;
-using System.Collections.Generic;
+using SeboProject.Utilities;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SeboProject.Helpers
 {
@@ -30,6 +28,24 @@ namespace SeboProject.Helpers
                 predicate = predicate.Or(p => p.CourseName.Contains(temp));
             }
             return  (from s in _context.Course select s).Where(predicate);
+        }
+        public static IQueryable<Book> SearchBook(SeboDbContext _context, string sortOrder, params string[] keywords)
+        {
+            IQueryable<Book> books = (from b in _context.Book select b);
+
+            if (keywords.Length > 0)
+            {
+                var predicate = PredicateBuilder.False<Book>();
+                foreach (string keyword in keywords)
+                {
+                    string temp = keyword;
+                    predicate = predicate.Or(p => p.Title.Contains(temp)).Or(p => p.Description.Contains(temp)).Or(p => p.ISBN.Contains(temp));
+                }
+                books = (from b in _context.Book select b).Where(predicate);
+            }
+
+            books = OrderingBooks.Do(books, sortOrder);
+            return books;
         }
     }
 }

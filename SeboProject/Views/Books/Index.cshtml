@@ -4,14 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Books</h2>
+<h2>Your Books Catalog Management</h2>
 
-<form asp-action="Index" method="get">
+<form asp-action="IndexBookAdm" method="get">
     <div class="form-actions  no-color">
         <p>
             Book Filter Filter:  <input type="text" name="SearchString" value="@ViewData["SearchString"]" />
             <input type="submit" value="Search" class="btn  btn-default" />  |
-            <a asp-action="Index">All records</a> | Records Displayed @*@Model.TotalR*@
+            <a asp-action="IndexBookAdm">All records</a> | Records Displayed @*@Model.TotalR*@
         </p>
     </div>
 </form>
@@ -26,6 +26,12 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudyArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookCondition)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ISBN)
@@ -46,25 +52,7 @@
                 @Html.DisplayNameFor(model => model.Visualizations)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QuantitySold)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Blocked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWaitList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookCondition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StudyArea)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
             </th>
             <th></th>
         </tr>
@@ -72,70 +60,58 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @{
-                        if (item.PhotoFileName != null)
-                        {
-                            var base64 = Convert.ToBase64String(item.PhotoFileName);
-                            var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
-                            <img src="@imgsrc" style="max-width:100px; max-height:100px;" />
-                        }
+        <tr>
+            <td>
+                @{
+                    if (item.PhotoFileName != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.PhotoFileName);
+                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                        <img src="@imgsrc" style="max-width:75px; max-height:75px;" />
                     }
+                }
 
-                    @*@Html.DisplayFor(modelItem => item.PhotoFileName)*@
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ISBN)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publisher)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Edition)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Visualizations)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QuantitySold)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Blocked)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsWaitList)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BookCondition.Condition)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.CreditcardName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
-                </td>
-            </tr>
+                @*@Html.DisplayFor(modelItem => item.PhotoFileName)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookCondition.Condition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Edition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Visualizations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Blocked)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

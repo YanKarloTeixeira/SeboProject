@@ -27,11 +27,6 @@ namespace SeboProject.Controllers
             var seboDbContext = _context.Course.Include(c => c.Institution).Include(c => c.StudyArea);
             var courses = (from s in seboDbContext select s);
 
-            //if (SearchString == null)
-            //{
-            //    mbox =
-            //}
-            //if (SearchString != null && currentSearchString==null) Page = 1; else currentSearchString = SearchString;
             if (currentSearchString != null)
             {
                 string[] m = currentSearchString.Split(".");

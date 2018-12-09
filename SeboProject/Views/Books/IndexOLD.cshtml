@@ -1,0 +1,144 @@
+﻿@*@model IEnumerable<SeboProject.Models.Book>*@
+@using SeboProject.Utilities
+@model Pagination<SeboProject.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Books For Selling</h2>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions  no-color">
+        <p>
+            Book Filter Filter:  <input type="text" name="SearchString" value="@ViewData["SearchString"]" />
+            <input type="submit" value="Search" class="btn  btn-default" />  |
+            <a asp-action="Index">All records</a> | Records Displayed @*@Model.TotalR*@
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.PhotoFileName)*@
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Title"]">Title</a>
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StudyArea"]">Study Area</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["BookCondition"]">Condition</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ISBN"]">ISBN</a>
+            </th>
+            <th>
+                Publisher
+            </th>
+            <th>
+                Edition
+            </th>
+            <th>
+                Qty
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Price"]">Price</a>
+                @*@Html.DisplayNameFor(model => model.Price)*@
+            </th>
+            <th>
+                Visualizations
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <form asp-action="Index" method="post">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    @Html.DropDownList("StudyAreaFilter", ((IEnumerable<SelectListItem>)ViewData["StudyAreaFilter"]), "All", new {
+                        onchange = "submit();"
+                    })
+                </th>
+                <th>
+                    @Html.DropDownList("BookConditionFilter", ((IEnumerable<SelectListItem>)ViewData["BookConditionFilter"]), "All", new    {
+                        onchange = "submit();"
+                    })
+                </th>
+            </form>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        if (item.PhotoFileName != null)
+                        {
+                            var base64 = Convert.ToBase64String(item.PhotoFileName);
+                            var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                            <img src="@imgsrc" style="max-width:75px; max-height:75px;" />
+                        }
+                    }
+
+                    @*@Html.DisplayFor(modelItem => item.PhotoFileName)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudyArea.StudyAreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookCondition.Condition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visualizations)
+                </td>
+                <td>
+                    <a asp-action="#" asp-route-id="@item.BookId">Buy It</a> |
+                    <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   @*asp-route-currentFilter="@ViewData[" CurrentFilter"]"*@
+   asp-route-currentSearchString="@ViewData["CurrentSearchString"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
