@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20181125205850_[Migration8].cs" />
+    <Compile Remove="Migrations\20181125205850_[Migration8].Designer.cs" />
+    <Compile Remove="Migrations\20181125205941_[Migration08].cs" />
+    <Compile Remove="Migrations\20181125205941_[Migration08].Designer.cs" />
+    <Compile Remove="Migrations\20181204173656_[migration09].cs" />
+    <Compile Remove="Migrations\20181204173656_[migration09].Designer.cs" />
+    <Compile Remove="Migrations\20181204191255_[migration10].cs" />
+    <Compile Remove="Migrations\20181204191255_[migration10].Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" PrivateAssets="All" />
   </ItemGroup>

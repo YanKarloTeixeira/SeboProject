@@ -1,0 +1,16 @@
+﻿CREATE TABLE [dbo].[CustomerService] (
+    [CustomerId] INT             IDENTITY (1, 1) NOT NULL,
+    [FullName]   NVARCHAR (100)  NOT NULL,
+    [Email]      NVARCHAR (1000) NULL,
+    [ISBN]       NVARCHAR (13)   NOT NULL,
+    [PostCode]   NVARCHAR (40)   NOT NULL,
+    [CodeNumber] INT             NOT NULL,
+    [Message]    NVARCHAR (40)   NOT NULL,
+    CONSTRAINT [PK_CustomerService] PRIMARY KEY CLUSTERED ([CustomerId] ASC)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Customer_Service_Customer_Id]
+    ON [dbo].[CustomerService]([CustomerId] ASC);
+

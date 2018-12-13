@@ -49,6 +49,7 @@ namespace SeboProject.Data
         public DbSet<SeboProject.Models.StudyArea> StudyArea { get; set; }
         public DbSet<SeboProject.Models.User> User { get; set; }
         public DbSet<SeboProject.Models.Seller> Seller { get; set; }
+        public DbSet<SeboProject.Models.CustomerService> CustomerService { get; set; }
 
 
     }

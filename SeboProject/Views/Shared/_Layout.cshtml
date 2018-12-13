@@ -37,10 +37,10 @@
         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
                     @if (SignInManager.IsSignedIn(User))
                     {
-
-                        <li><a asp-area="" asp-controller="Localizations" asp-action="Index">Localizations</a></li>
+                        <li><a asp-area="" asp-controller="CustomerServices" asp-action="Index">Customer Service</a></li>
+                        @*<li><a asp-area="" asp-controller="Localizations" asp-action="Index">Localizations</a></li>
                         <li><a asp-area="" asp-controller="Institutions" asp-action="Index">Institutions</a></li>
-                        <li><a asp-area="" asp-controller="InstitutionBranches" asp-action="Index">Intitution Branches</a></li>
+                        <li><a asp-area="" asp-controller="InstitutionBranches" asp-action="Index">Intitution Branches</a></li>*@
                         <li><a asp-area="" asp-controller="BookConditions" asp-action="Index">Book Conditions</a></li>
                         <li><a asp-area="" asp-controller="StudyAreas" asp-action="Index">Study Areas</a></li>
                         @*<li><a asp-area="" asp-controller="Claims" asp-action="Index">Claims</a></li>
