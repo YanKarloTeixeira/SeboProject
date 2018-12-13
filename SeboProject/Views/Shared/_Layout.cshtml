@@ -37,23 +37,23 @@
         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="CustomerServices" asp-action="Index">Customer Service</a></li>
-                        @*<li><a asp-area="" asp-controller="Localizations" asp-action="Index">Localizations</a></li>
+
+                        <li><a asp-area="" asp-controller="Localizations" asp-action="Index">Localizations</a></li>
                         <li><a asp-area="" asp-controller="Institutions" asp-action="Index">Institutions</a></li>
-                        <li><a asp-area="" asp-controller="InstitutionBranches" asp-action="Index">Intitution Branches</a></li>*@
+                        <li><a asp-area="" asp-controller="InstitutionBranches" asp-action="Index">Intitution Branches</a></li>
                         <li><a asp-area="" asp-controller="BookConditions" asp-action="Index">Book Conditions</a></li>
                         <li><a asp-area="" asp-controller="StudyAreas" asp-action="Index">Study Areas</a></li>
                         @*<li><a asp-area="" asp-controller="Claims" asp-action="Index">Claims</a></li>
             <li><a asp-area="" asp-controller="ClaimMediations" asp-action="Index">Claims Mediations</a></li>*@
                         <li><a asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
-                        <li><a asp-area="" asp-controller="Books" asp-action="Index">Books</a></li>
+                        <li><a asp-area="" asp-controller="Books" asp-action="BooksCatalog"  *asp-route-UserName="@this.User.Identity.Name">Books</a></li>
                     }
                     <li><a asp-area="" asp-controller="Users" asp-action="Details">User Profile Adm</a></li>
                     <li><a asp-area="" asp-controller="Books" asp-action="Index" asp-route-UserName="@this.User.Identity.Name">Books for Selling Adm</a></li>
 
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                        @*<li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>*@
                     }
                     @*<li><a asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>*@
                 </ul>

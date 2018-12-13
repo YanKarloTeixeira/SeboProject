@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SeboProject.Data;
 using SeboProject.Helpers;
 using SeboProject.Models;
+using SeboProject.Utilities;
 
 namespace SeboProject.Controllers
 {
@@ -23,20 +24,164 @@ namespace SeboProject.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string UserName)
+        public async Task<IActionResult> BooksCatalog(string UserName, string sortOrder, string currentSearchString, string SearchString, int StudyAreaFilter, int BookConditionFilter, int? Page)
         {
-            int UserId = HelperUser.GetUserId(UserName, _context);
-            if(UserId > 0)
+            if (currentSearchString != null)
             {
-                var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User).Where(b => b.UserId == UserId);
-                return View(await seboDbContext.ToListAsync());
+                string[] m = currentSearchString.Split(".");
+                currentSearchString = m[0]; // preserves the current filter typed within the search textbox
+                if (SearchString == null)
+                {
+                    SearchString = currentSearchString;
+                }
+                if (StudyAreaFilter == 0)
+                {
+                    StudyAreaFilter = Int32.Parse(m[1]);   // preserves the select institution option in the dropdownlist
+                }
+                if (BookConditionFilter == 0)
+                {
+                    BookConditionFilter = Int32.Parse(m[2]);     // preserves the select Study Area option in the dropdownlist
+                }
             }
-            else {
-                var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
-                return View(await seboDbContext.ToListAsync());
-            }
+            //Get the User ID 
+            //int UserId = HelperUser.GetUserId(UserName, _context);
+            int UserId = HelperUser.GetUserId(this.User.Identity.Name, _context);
+            int UserBranchId = HelperUser.GetUserBranchId(this.User.Identity.Name, _context);
 
+            // Cheks whether a search string was typed and prepares for search by each word
+            string[]  myString = SearchString!=null ? SearchString.Trim().Split(" ") : new string[0];
+
+            // Get the seach's recordset already sorted
+            var books = StringSearch.SearchBook(_context, sortOrder, myString).Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User)
+                .Where(b => !b.Blocked)
+                .Where(b => !b.IsWaitList);
+
+            var users = (from u in _context.User select u).Include(u => u.InstitutionBranch);
+            //var books2 = from book in books
+            //             join user in users on book.UserId equals user.UserId
+            //             select new {book, user.InstitutionBranchId,user.InstitutionBranch.InstitutionBranchName});
+            var books2 = (from b in books
+                         join u in users on b.UserId equals u.UserId
+                         select new
+                         {
+                             b.Blocked,
+                             b.BookCondition,
+                             b.BookConditionId,
+                             b.BookId,
+                             b.CreationDate,
+                             b.Description,
+                             b.Edition,
+                             b.ISBN,
+                             b.IsWaitList,
+                             b.Orders,
+                             b.PhotoFileName,
+                             b.Price,
+                             b.Publisher,
+                             b.Quantity,
+                             b.QuantitySold,
+                             b.StudyArea,
+                             b.StudyAreaId,
+                             b.Title,
+                             b.User,
+                             b.UserId,
+                             b.Visualizations,
+                             u.InstitutionBranchId,
+                             u.InstitutionBranch.InstitutionBranchName
+                         }).Where(b=>b.InstitutionBranchId==UserBranchId);
+
+            // Applying filters on the table
+            if (StudyAreaFilter != 0) books2 = books2.Where(b => b.StudyAreaId == StudyAreaFilter);
+            if (BookConditionFilter != 0) books2 = books2.Where(b => b.BookConditionId == BookConditionFilter);
+
+            //
+            // Preparing Dropboxes 
+            //
+            var StudyAreas = (from s in books2 orderby s.StudyArea.StudyAreaName select new { s.StudyAreaId, s.StudyArea.StudyAreaName }).ToList().Distinct();
+            var BookConditions = (from b in books2 orderby b.BookCondition select new { b.BookConditionId, b.BookCondition.Condition }).ToList().Distinct();
+
+            ViewData["StudyAreaFilter"] = new SelectList(StudyAreas, "StudyAreaId", "StudyAreaName");
+            ViewData["BookConditionFilter"] = new SelectList(BookConditions, "BookConditionId", "Condition");
+            //////////////////////////////////////
+
+            ViewData["CurrentSearchString"] = SearchString +"." + StudyAreaFilter + "." + BookConditionFilter + "." + Page;
+            ViewData["SearchString"] = SearchString;
+
+            //
+            // Just tracking which ordering column was trigged for setting the actual ordering
+            //
+            ViewData["Title"] = OrderingBooks.NewOrder(sortOrder, "Title");
+            ViewData["StudyArea"] = OrderingBooks.NewOrder(sortOrder, "StudyArea");
+            ViewData["BookCondition"] = OrderingBooks.NewOrder(sortOrder, "BookCondition");
+            ViewData["ISBN"] = OrderingBooks.NewOrder(sortOrder, "ISBN");
+            ViewData["Price"] = OrderingBooks.NewOrder(sortOrder, "Price");
+
+            int PageSize = 14;
+            return View(await Pagination<Book>.CreateAsync(books.AsNoTracking(), Page ?? 1, PageSize));
         }
+
+        public async Task<IActionResult> Index(string UserName, string sortOrder, string currentSearchString, string SearchString, int StudyAreaFilter, int BookConditionFilter, int? Page)
+        {
+            if (currentSearchString != null)
+            {
+                string[] m = currentSearchString.Split(".");
+                currentSearchString = m[0]; // preserves the current filter typed within the search textbox
+                if (SearchString == null)
+                {
+                    SearchString = currentSearchString;
+                }
+                if (StudyAreaFilter == 0)
+                {
+                    StudyAreaFilter = Int32.Parse(m[1]);   // preserves the select institution option in the dropdownlist
+                }
+                if (BookConditionFilter == 0)
+                {
+                    BookConditionFilter = Int32.Parse(m[2]);     // preserves the select Study Area option in the dropdownlist
+                }
+            }
+            //Get the User ID
+            int UserId = HelperUser.GetUserId(UserName, _context);
+
+            // Cheks whether a search string was typed and prepares for search by each word
+            string[] myString = SearchString != null ? SearchString.Trim().Split(" ") : new string[0];
+
+            // Get the seach's recordset already sorted
+            var books = StringSearch.SearchBook(_context, sortOrder, myString).Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User)
+                .Where(b => !b.Blocked)
+                .Where(b => !b.IsWaitList)
+                .Where(b => UserId > 0 || UserName != null ? b.UserId == UserId : b.UserId > 0);
+
+            // Applying filters on the table
+            if (StudyAreaFilter != 0) books = books.Where(b => b.StudyAreaId == StudyAreaFilter);
+            if (BookConditionFilter != 0) books = books.Where(b => b.BookConditionId == BookConditionFilter);
+
+            //
+            // Preparing Dropboxes 
+            //
+            var StudyAreas = (from s in books orderby s.StudyArea.StudyAreaName select new { s.StudyAreaId, s.StudyArea.StudyAreaName }).ToList().Distinct();
+            var BookConditions = (from b in books orderby b.BookCondition select new { b.BookConditionId, b.BookCondition.Condition }).ToList().Distinct();
+
+            ViewData["StudyAreaFilter"] = new SelectList(StudyAreas, "StudyAreaId", "StudyAreaName");
+            ViewData["BookConditionFilter"] = new SelectList(BookConditions, "BookConditionId", "Condition");
+            //////////////////////////////////////
+
+            ViewData["CurrentSearchString"] = SearchString + "." + StudyAreaFilter + "." + BookConditionFilter + "." + Page;
+            ViewData["SearchString"] = SearchString;
+
+            //
+            // Just tracking which ordering column was trigged for setting the actual ordering
+            //
+            ViewData["Title"] = OrderingBooks.NewOrder(sortOrder, "Title");
+            ViewData["StudyArea"] = OrderingBooks.NewOrder(sortOrder, "StudyArea");
+            ViewData["BookCondition"] = OrderingBooks.NewOrder(sortOrder, "BookCondition");
+            ViewData["ISBN"] = OrderingBooks.NewOrder(sortOrder, "ISBN");
+            ViewData["Price"] = OrderingBooks.NewOrder(sortOrder, "Price");
+
+            int PageSize = 14;
+            return View(await Pagination<Book>.CreateAsync(books.AsNoTracking(), Page ?? 1, PageSize));
+        }
+
+
+
         public async Task<IActionResult> Welcome()
         {
             var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
@@ -94,14 +239,49 @@ namespace SeboProject.Controllers
             return View(book);
         }
 
-        // GET: Books/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+        public async Task<IActionResult> BookCatalogDetails(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            //var bk = (from b in _context.Book where b.BookId == book.BookId select b.PhotoFileName).ToArray();
+            Book bookVisualized = (from b in _context.Book
+                                   where b.BookId == id
+                                   select b).SingleOrDefault();
+
+            bookVisualized.Visualizations++;
+            _context.Book.Update(bookVisualized);
+            await _context.SaveChangesAsync();
+
+            _context.SaveChanges();
+            var book = await _context.Book
+                .Include(b => b.BookCondition)
+                .Include(b => b.StudyArea)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(m => m.BookId == id);
+            if (book == null)
             {
                 return NotFound();
             }
 
+            return View(book);
+        }
+        // GET: Books/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || id==0)
+            {
+                return NotFound();
+            }
+            //var bk = (from b in _context.Book where b.BookId == book.BookId select b.PhotoFileName).ToArray();
+            Book bookVisualized = (from b in _context.Book where b.BookId == id
+                            select b).SingleOrDefault();
+
+            bookVisualized.Visualizations++;
+
+            _context.SaveChanges();
             var book = await _context.Book
                 .Include(b => b.BookCondition)
                 .Include(b => b.StudyArea)
@@ -124,25 +304,7 @@ namespace SeboProject.Controllers
             return View();
         }
 
-        // POST: Books/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("BookId,PhotoFileName,Title,Description,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,UserId")] Book book)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(book);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["BookConditionId"] = new SelectList(_context.BookCondition, "BookConditionId", "Condition", book.BookConditionId);
-        //    ViewData["StudyAreaId"] = new SelectList(_context.StudyArea, "StudyAreaId", "StudyAreaName", book.StudyAreaId);
-        //    ViewData["UserId"] = new SelectList(_context.User, "UserId", "CreditcardName", book.UserId);
-        //    return View(book);
-        //}
-
+  
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -173,6 +335,8 @@ namespace SeboProject.Controllers
         //public async Task<IActionResult> Edit(int id, BookId,PhotoFileName,Title,Description,ISBN,Publisher,Edition,Quantity,Price,Visualizations,QuantitySold,Blocked,IsWaitList,CreationDate,BookConditionId,StudyAreaId,UserId)
         //
         {
+            long size = 0;
+            
             Book book = new Book
             {
                 BookId = BookId,
@@ -200,13 +364,17 @@ namespace SeboProject.Controllers
                 book.UserId = UserId;
                 if (PhotoFileName != null)
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        await PhotoFileName.CopyToAsync(ms);
-                        book.PhotoFileName = ms.ToArray();
-                    }
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    await PhotoFileName.CopyToAsync(ms);
+                    //    book.PhotoFileName = ms.ToArray();
+                    //}
+                    MemoryStream ms = new MemoryStream();
+                    await PhotoFileName.CopyToAsync(ms);
+                    book.PhotoFileName = ms.ToArray();
+                    size= (PhotoFileName.Length / 1024 ) ;
                 }
-                
+
 
 
                 if (id != book.BookId)
@@ -214,7 +382,7 @@ namespace SeboProject.Controllers
                     return NotFound();
                 }
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && size<=2048)
                 {
                     try
                     {

@@ -27,6 +27,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Books\BookCatalogDetails.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Books\IndexOLD.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Books\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Books\Welcome.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

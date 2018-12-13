@@ -12,9 +12,18 @@ namespace SeboProject.Helpers
         {
             
             var user = (from s in _context.User where s.UserName == UserName select s.UserId).ToList();
-            int UserId = user[0];
-            if (UserId > 0)
-                return UserId;
+            if (user.Count() > 0)
+                return user[0];
+            else
+                return -1;
+
+        }
+        public static int GetUserBranchId(string UserName, SeboDbContext _context)
+        {
+
+            var user = (from s in _context.User where s.UserName == UserName select s.InstitutionBranchId).ToList();
+            if (user.Count() > 0)
+                return user[0];
             else
                 return -1;
 
