@@ -328,3 +328,17 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/SeboProject/Models/ApplicationUser.cs
+/SeboProject/Migrations/20181120185154_TableSeller.Designer.cs
+/SeboProject/Migrations/20181120185154_TableSeller.cs
+/SeboProject/Migrations/20181120185127_TableUser_PhotoFileName.Designer.cs
+/SeboProject/Migrations/20181120185127_TableUser_PhotoFileName.cs
+/SeboProject/Migrations/20181120185110_TableUser_IsBlocked.Designer.cs
+/SeboProject/Migrations/20181120185110_TableUser_IsBlocked.cs
+/SeboProject/Migrations/20181120185037_TableUser_CrediCardName.Designer.cs
+/SeboProject/Migrations/20181120185037_TableUser_CrediCardName.cs
+/SeboProject/Controllers/CartController.cs
+/SeboProject/Helpers/BookModel.cs
+/SeboProject/Helpers/SessionExtensions.cs
+/SeboProject/Models/Item.cs
+/SeboProject/Models/OrderDetail.cs
