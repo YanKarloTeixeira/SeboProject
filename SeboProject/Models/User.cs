@@ -18,7 +18,7 @@ namespace SeboProject.Models
         [StringLength(30, MinimumLength = 1, ErrorMessage = "Your first name size must be between 1 and 30 characters.")]
         public string FirstName { get; set; } //
 
-        [StringLength(30, MinimumLength = 1, ErrorMessage = "Your middle name size must be between 1 and 30 characters.")]
+        [StringLength(30, ErrorMessage = "Your middle name maximum size is 30 characters.")]
         public string MiddleName { get; set; }//
 
         [Required(ErrorMessage = "You must inform your last name.")]

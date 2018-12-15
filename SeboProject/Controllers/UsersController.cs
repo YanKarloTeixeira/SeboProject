@@ -72,9 +72,25 @@ namespace SeboProject.Controllers
         }
 
         // GET: Users/Create
-        public IActionResult Create()
+
+        [HttpPost]
+        public IActionResult Test(string InstitutionFilter = null)
         {
-            ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName");
+
+
+            ViewData["InstitutionFilter"] = new SelectList(_context.Institution, "InstitutionId", "InstitutionName");
+            if (String.IsNullOrEmpty(InstitutionFilter))
+                ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName");
+            else
+                ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch.Where(b => b.InstitutionId.ToString() == InstitutionFilter), "InstitutionBranchId", "InstitutionBranchName");
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
+            return View();
+        }
+        public IActionResult Create(string InstitutionFilter = null)
+        {
+
+            var lista = from l in _context.InstitutionBranch.Include(b=> b.Institution) select new { l.InstitutionBranchId, item ="Institution : "+l.Institution.InstitutionName +" / Campus : "+l.InstitutionBranchName, };
+            ViewData["InstitutionBranchId"] = new SelectList(lista, "InstitutionBranchId", "item");
             ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
             return View();
         }
@@ -84,17 +100,23 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
         public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
         {
+            user.Email = user.UserName;
             if (ModelState.IsValid)
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("BooksCatalog", "Books");
             }
-            ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
-            return View(user);
+            //ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
+            //ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
+            var lista = from l in _context.InstitutionBranch.Include(b => b.Institution) select new { l.InstitutionBranchId, item = "Institution : " + l.Institution.InstitutionName + " / Campus : " + l.InstitutionBranchName, };
+            ViewData["InstitutionBranchId"] = new SelectList(lista, "InstitutionBranchId", "item");
+            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
+            return View();
+
         }
 
         // GET: Users/Edit/5
