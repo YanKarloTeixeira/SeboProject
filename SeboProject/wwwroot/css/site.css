@@ -11,7 +11,66 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
+/*add by shila on 14 dec 2018*/
 
+.books-card-cover {
+    padding: 15px 30px;
+}
+
+.books-card .books-poster {
+    background-position: top;
+   
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.books-add-link {
+    padding: 0px 30px;
+    text-align: right;
+}
+
+    .books-add-link a {
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+.books-card .books-poster .books-view-link {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    opacity: 0;
+    font-size: 24px;
+    font-weight: 100;
+    text-align: center;
+    padding-top: 50%;
+    text-decoration: none;
+    transition: all ease-in-out .2s;
+}
+
+    .books-card .books-poster .books-view-link:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, .8)
+    }
+
+
+.books-card .books-title {
+    padding: 5px 0px;
+  
+    font-size: 18px;
+}
+
+
+.book-player-cover {
+    height: 100px;
+    width: 100%;
+    background-color: rgba(0, 0, 0,1)
+}
+
+/*end of addition by shila*/
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
