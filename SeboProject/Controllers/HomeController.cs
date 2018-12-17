@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SeboProject.Data;
+using SeboProject.Helpers;
 using SeboProject.Models;
 
 namespace SeboProject.Controllers
@@ -20,7 +21,13 @@ namespace SeboProject.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
+            int UserId = HelperUser.GetUserId(this.User.Identity.Name, _context);
+            var seboDbContext = _context.Book.Include(b => b.BookCondition)
+             .Include(b => b.StudyArea)
+             .Include(b => b.User)
+
+             .Where(b => HelperUser.isAdministrator(this.User.Identity.Name) || String.IsNullOrEmpty(this.User.Identity.Name) ? b.UserId > 0 : b.UserId != UserId)
+             .Where(b => b.Quantity > b.QuantitySold);
             return View(await seboDbContext.ToListAsync());
         }
 

@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<br />
+<br />
+<br />
+<br />
+<br />
+<h1> Transaction Successful</h1>
+<br />
+<br />
+<h3>Information About The Seller:</h3>
+<br />
+<br />
+<h4>
+    <ul style="list-style-type:disc">
+        <li><strong>Name  : </strong> @ViewData["SellerName"]</li>
+        <li><strong>Email : </strong> @ViewData["SellerEmail"]</li>
+        <li><strong>Phone : </strong> @ViewData["SellerPhone"]</li>
+    </ul>
+</h4>
+
+<h3>@ViewData["ClosingMessage"]</h3>
+
+<br />
+<br />
+<br />
+
+    <a asp-area="" asp-controller="Books" asp-action="BooksCatalog" asp-route-UserName="@this.User.Identity.Name"  class="btn btn-default">Go To Books Catalog</a>
+

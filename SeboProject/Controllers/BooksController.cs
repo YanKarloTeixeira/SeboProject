@@ -26,6 +26,7 @@ namespace SeboProject.Controllers
         // GET: Books
         public async Task<IActionResult> BooksCatalog(string UserName, string sortOrder, string currentSearchString, string SearchString, int StudyAreaFilter, int BookConditionFilter, int? Page)
         {
+
             if (currentSearchString != null)
             {
                 string[] m = currentSearchString.Split(".");
@@ -44,7 +45,6 @@ namespace SeboProject.Controllers
                 }
             }
             //Get the User ID 
-            //int UserId = HelperUser.GetUserId(UserName, _context);
             int UserId = HelperUser.GetUserId(this.User.Identity.Name, _context);
             int UserBranchId = HelperUser.GetUserBranchId(this.User.Identity.Name, _context);
 
@@ -54,12 +54,12 @@ namespace SeboProject.Controllers
             // Get the seach's recordset already sorted
             var books = StringSearch.SearchBook(_context, sortOrder, myString).Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User)
                 .Where(b => !b.Blocked)
+                .Where(b => b.Quantity > b.QuantitySold)
+                .Where(b => b.UserId!= UserId)
                 .Where(b => !b.IsWaitList);
 
             var users = (from u in _context.User select u).Include(u => u.InstitutionBranch);
-            //var books2 = from book in books
-            //             join user in users on book.UserId equals user.UserId
-            //             select new {book, user.InstitutionBranchId,user.InstitutionBranch.InstitutionBranchName});
+            //Getting the books from the same institution
             var books2 = (from b in books
                          join u in users on b.UserId equals u.UserId
                          select new
@@ -139,16 +139,19 @@ namespace SeboProject.Controllers
                 }
             }
             //Get the User ID
+            if(String.IsNullOrEmpty(UserName)) UserName = this.User.Identity.Name;
             int UserId = HelperUser.GetUserId(UserName, _context);
 
             // Cheks whether a search string was typed and prepares for search by each word
             string[] myString = SearchString != null ? SearchString.Trim().Split(" ") : new string[0];
-
-            // Get the seach's recordset already sorted
+            var x = HelperUser.isAdministrator(UserName);
+            // Get the seach's recordset already sorted applying filtering according to user role
             var books = StringSearch.SearchBook(_context, sortOrder, myString).Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User)
                 .Where(b => !b.Blocked)
+                .Where(b => b.Quantity > b.QuantitySold)
                 .Where(b => !b.IsWaitList)
-                .Where(b => UserId > 0 || UserName != null ? b.UserId == UserId : b.UserId > 0);
+                .Where(b=> HelperUser.isAdministrator(UserName) ? b.UserId > 0 : b.UserId == UserId);
+                //.Where(b => UserId > 0 || UserName != null ? b.UserId == UserId : b.UserId > 0)
 
             // Applying filters on the table
             if (StudyAreaFilter != 0) books = books.Where(b => b.StudyAreaId == StudyAreaFilter);
@@ -184,7 +187,18 @@ namespace SeboProject.Controllers
 
         public async Task<IActionResult> Welcome()
         {
-            var seboDbContext = _context.Book.Include(b => b.BookCondition).Include(b => b.StudyArea).Include(b => b.User);
+            int UserId = HelperUser.GetUserId(this.User.Identity.Name, _context);
+
+
+            var seboDbContext = _context.Book.Include(b => b.BookCondition)
+                .Include(b => b.StudyArea)
+                .Include(b => b.User)
+
+                .Where(b => b.Quantity > b.QuantitySold)
+                .Where(b => HelperUser.isAdministrator(this.User.Identity.Name) || String.IsNullOrEmpty(this.User.Identity.Name) ? b.UserId > 0 : b.UserId == UserId);
+            //.Where(b => b.UserId != UserId)
+
+
             return View(await seboDbContext.ToListAsync());
         }
 

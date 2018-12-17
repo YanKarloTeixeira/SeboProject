@@ -11,7 +11,7 @@ namespace SeboProject.Models
         public int OrderId { get; set; }
     
         public int Quantity { get; set; } = 1;
-        public int Price { get; set; }
+        public double Price { get; set; }
         public string PaymentForm { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime PaymentDate { get; set; }
@@ -29,8 +29,10 @@ namespace SeboProject.Models
         public virtual Book Book { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
-        public int SellerId { get; set; }
+        public virtual User User { get; set; }
+        
+        public  int SellerId { get; set; }
+        public virtual int Seller { get; set; }
 
         public virtual ICollection<Claim> Claims { get; set; }
 

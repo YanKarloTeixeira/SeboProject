@@ -100,17 +100,15 @@
         <dd>
             @Html.DisplayFor(model => model.InstitutionBranch.InstitutionBranchName)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.isBlocked)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.isBlocked)
+        </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.UserId">Edit</a> |
-    @{ if (String.IsNullOrEmpty(ViewData["PreviousPage"].ToString()))
-        {
-            <a asp-action="Index">Back to List</a>
-        }
-        else
-        {
-            <a asp-action="Index" asp-controller="Home">Back to List</a>
-        }
-    }
+    <a asp-action="Index">Back to List</a>
 </div>

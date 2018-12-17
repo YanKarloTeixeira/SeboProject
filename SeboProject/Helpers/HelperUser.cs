@@ -18,6 +18,7 @@ namespace SeboProject.Helpers
                 return -1;
 
         }
+
         public static int GetUserBranchId(string UserName, SeboDbContext _context)
         {
 
@@ -27,6 +28,23 @@ namespace SeboProject.Helpers
             else
                 return -1;
 
+        }
+
+        public static bool isAdministrator(string user)
+        {
+            if(user=="yankarlo@hotmail.com"||
+                user=="admin@admin.com"||
+                user=="anurlai @my.centennialcollege.ca"||
+                user=="kkaur279@my.centennialcollege.ca"||
+                user=="npate476 @my.centennialcollege.ca"||
+                user=="rdhali36 @my.centennialcollege.ca"||
+                user=="rpunia2 @my.centennialcollege.ca"||
+                user=="sdas47 @my.centennialcollege.ca")
+
+                    return true;
+            else
+                    return false;
+            
         }
     }
 }

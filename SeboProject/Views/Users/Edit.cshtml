@@ -89,6 +89,13 @@
                 <span asp-validation-for="InstitutionBranchId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="isBlocked" /> @Html.DisplayNameFor(model => model.isBlocked)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>

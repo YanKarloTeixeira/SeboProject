@@ -25,7 +25,6 @@ namespace SeboProject.Controllers
             var seboDbContext = _context.User.Include(u => u.InstitutionBranch).Include(u => u.Localization);
             return View(await seboDbContext.ToListAsync());
         }
-
         public Task<IActionResult> UserProfileSelfAdm()
         {
             string LogedUser = this.User.Identity.Name;
@@ -33,7 +32,7 @@ namespace SeboProject.Controllers
             int UserId = user[0];
             Task<IActionResult> action = Details(UserId);
 
-            
+
             return action;
         }
 
@@ -72,24 +71,23 @@ namespace SeboProject.Controllers
         }
 
         // GET: Users/Create
-
-        [HttpPost]
-        public IActionResult Test(string InstitutionFilter = null)
-        {
-
-
-            ViewData["InstitutionFilter"] = new SelectList(_context.Institution, "InstitutionId", "InstitutionName");
-            if (String.IsNullOrEmpty(InstitutionFilter))
-                ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName");
-            else
-                ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch.Where(b => b.InstitutionId.ToString() == InstitutionFilter), "InstitutionBranchId", "InstitutionBranchName");
-            ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName");
+        //    ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
+        //    return View();
+        //}
         public IActionResult Create(string InstitutionFilter = null)
         {
 
-            var lista = from l in _context.InstitutionBranch.Include(b=> b.Institution) select new { l.InstitutionBranchId, item ="Institution : "+l.Institution.InstitutionName +" / Campus : "+l.InstitutionBranchName, };
+            List<SelectListItem> UserTypeList = new List<SelectListItem>() {
+                new SelectListItem { Text = "Student", Value = "1"},
+                new SelectListItem { Text = "Graduated", Value = "2"},
+                new SelectListItem { Text = "Business", Value = "3"} };
+
+            ViewBag.UserType = new SelectList(UserTypeList, "Value", "Text");
+
+            var lista = from l in _context.InstitutionBranch.Include(b => b.Institution) select new { l.InstitutionBranchId, item = "Institution : " + l.Institution.InstitutionName + " / Campus : " + l.InstitutionBranchName, };
             ViewData["InstitutionBranchId"] = new SelectList(lista, "InstitutionBranchId", "item");
             ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
             return View();
@@ -100,23 +98,22 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
-        public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId,isBlocked")] User user)
         {
             user.Email = user.UserName;
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("BooksCatalog", "Books");
+
+                //return RedirectToAction(nameof(Index));
             }
-            //ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
-            //ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
             var lista = from l in _context.InstitutionBranch.Include(b => b.Institution) select new { l.InstitutionBranchId, item = "Institution : " + l.Institution.InstitutionName + " / Campus : " + l.InstitutionBranchName, };
             ViewData["InstitutionBranchId"] = new SelectList(lista, "InstitutionBranchId", "item");
             ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName");
-            return View();
-
+            return View(user);
         }
 
         // GET: Users/Edit/5
@@ -124,17 +121,7 @@ namespace SeboProject.Controllers
         {
             if (id == null)
             {
-                string LogedUser = this.User.Identity.Name;
-                var u = (from s in _context.User where s.UserName == LogedUser select s.UserId).ToList();
-                int UserId = u[0];
-                if (UserId > 0)
-                {
-                    id = UserId;
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return NotFound();
             }
 
             var user = await _context.User.FindAsync(id);
@@ -152,7 +139,7 @@ namespace SeboProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,FirstName,MiddleName,LastName,UserType,Address,Number,AddressComplement,Age,Email,Phone,Creditcard,CreditcardName,LocalizationId,InstitutionBranchId,isBlocked")] User user)
         {
             if (id != user.UserId)
             {
@@ -181,7 +168,7 @@ namespace SeboProject.Controllers
             }
             ViewData["InstitutionBranchId"] = new SelectList(_context.InstitutionBranch, "InstitutionBranchId", "InstitutionBranchName", user.InstitutionBranchId);
             ViewData["LocalizationId"] = new SelectList(_context.Localization, "LocalizationId", "PlaceName", user.LocalizationId);
-            return View(user);
+            return RedirectToAction("Details");
         }
 
         // GET: Users/Delete/5

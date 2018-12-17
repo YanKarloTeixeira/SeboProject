@@ -64,7 +64,8 @@ new SelectListItem{ Text="ISBN", Value = "ISBN" }
                     </div>
 
                     <div class="books-options">
-                        <a asp-action="#" asp-route-id="@item.BookId">Buy It</a> |
+                        <a asp-controller="Orders" asp-action="BuyIt" asp-route-id="@item.BookId">Buy It</a>
+                        @*<a asp-action="#" asp-route-id="@item.BookId">Buy It</a> |*@
                         <a asp-action="BookCatalogDetails" asp-route-id="@item.BookId">Details</a>
                     </div>
 
